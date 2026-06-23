@@ -1,0 +1,39 @@
+---
+description: Brand-first design conventions — tokens, typography, motion, and responsive layout
+alwaysApply: true
+---
+
+# Design Conventions
+
+Design to the LocalIQ brand, not a generic SaaS look. Reference `files/ui-tokens.md` and reuse existing components before building new UI.
+
+## Tokens and components
+
+- Use CSS variables (`--color-*`, `--space-*`, `--radius-*`, `--font-*`) from `globals.css` / `ui-tokens.md`.
+- Never hardcode hex colors, arbitrary spacing (`p-[13px]`), or one-off radii.
+- Prefer existing shared components; extend them rather than duplicating patterns.
+
+```tsx
+// ❌ BAD
+<div className="bg-[#534AB7] p-[18px] rounded-3xl" />
+
+// ✅ GOOD
+<div className="bg-[var(--color-brand)] p-[var(--space-5)] rounded-[var(--radius-md)]" />
+```
+
+## Typography and color
+
+- At most two typefaces: `--font-sans` (Inter) and `--font-mono` (JetBrains Mono).
+- One accent color: `--color-accent` (teal). Brand purple (`--color-brand`) is for primary actions, not decoration.
+- Use the typography scale (`text-h1`, `text-body`, etc.) for hierarchy — size and weight, not extra colors or shadows.
+
+## Layout and motion
+
+- Brand-first hierarchy: clear headings, restrained whitespace, content over chrome.
+- Restrained motion: short, purposeful transitions; no decorative animations.
+- No hero cards, gradient banners, or oversized rounded corners. Max radius: `--radius-lg` (14px) unless a token says otherwise.
+
+## Responsive
+
+- Build mobile-first; scale up with breakpoints.
+- Before finishing UI work, verify layout in preview at mobile and desktop widths.
