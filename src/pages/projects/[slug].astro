@@ -1,0 +1,58 @@
+---
+import ProjectCaseStudy from "@/components/projects/ProjectCaseStudy.astro";
+import ProjectMetaRow from "@/components/projects/ProjectMetaRow.astro";
+import ProjectWireframeMockup from "@/components/projects/ProjectWireframeMockup.astro";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Container from "@/components/layout/Container.astro";
+import { getAllProjectSlugs, getProjectBySlug } from "@/lib/mock/projects";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (() => {
+  return getAllProjectSlugs().map((slug) => ({
+    params: { slug },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const project = slug ? getProjectBySlug(slug) : undefined;
+
+if (!project) {
+  return new Response(null, { status: 404, statusText: "Not found" });
+}
+---
+
+<BaseLayout
+  title={`${project.title} — Case Study`}
+  description={project.description}
+  backLink={{ href: "/projects", label: "← All projects" }}
+  footerActionLink={{ href: "/projects", label: "More projects →" }}
+>
+  <article class="py-[clamp(3rem,8vw,6rem)]">
+    <Container>
+      <header class="mb-10">
+        <p class="mb-4 font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-text-muted">
+          Case study
+        </p>
+        <h1
+          class="mb-4 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
+        >
+          {project.title}
+        </h1>
+        <p class="max-w-[52ch] text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.65] text-text-muted">
+          {project.description}
+        </p>
+      </header>
+
+      <div class="mb-10 overflow-hidden rounded-lg border border-border">
+        <ProjectWireframeMockup
+          browserUrl={project.heroBrowserUrl}
+          variant={project.mockupVariant}
+          layout="hero"
+        />
+      </div>
+
+      <ProjectMetaRow project={project} />
+      <ProjectCaseStudy sections={project.sections} links={project.links} />
+    </Container>
+  </article>
+</BaseLayout>

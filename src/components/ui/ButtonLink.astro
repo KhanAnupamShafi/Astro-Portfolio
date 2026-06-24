@@ -2,9 +2,10 @@
 type Props = {
   href: string;
   variant?: "primary" | "secondary" | "ghost";
+  class?: string;
 };
 
-const { href, variant = "primary" } = Astro.props;
+const { href, variant = "primary", class: className } = Astro.props;
 
 const baseClasses =
   "inline-flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-150";
@@ -18,6 +19,6 @@ const variantClasses = {
 };
 ---
 
-<a href={href} class:list={[baseClasses, variantClasses[variant]]}>
+<a href={href} class:list={[baseClasses, variantClasses[variant], className]}>
   <slot />
 </a>

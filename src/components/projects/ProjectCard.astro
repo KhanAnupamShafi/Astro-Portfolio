@@ -1,0 +1,28 @@
+---
+import ProjectWireframeMockup from "@/components/projects/ProjectWireframeMockup.astro";
+import Tag from "@/components/ui/Tag.astro";
+import type { Project } from "@/types";
+
+type Props = {
+  project: Project;
+};
+
+const { project } = Astro.props;
+---
+
+<a
+  href={`/projects/${project.slug}`}
+  class="group overflow-hidden rounded-lg border border-border bg-surface transition-colors duration-150 hover:border-[color-mix(in_oklch,var(--color-border),var(--color-text-primary)_25%)]"
+>
+  <ProjectWireframeMockup browserUrl={project.browserUrl} variant={project.mockupVariant} />
+
+  <div class="p-5">
+    <h2 class="mb-2 text-base font-semibold tracking-[-0.02em] text-text-primary">
+      {project.title}
+    </h2>
+    <p class="mb-3 text-sm text-text-muted">{project.shortDescription}</p>
+    <div class="flex flex-wrap gap-1.5">
+      {project.techStack.map((tech) => <Tag label={tech} />)}
+    </div>
+  </div>
+</a>

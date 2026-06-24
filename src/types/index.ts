@@ -54,3 +54,36 @@ export type AboutPageData = {
   skillCategories: SkillCategory[];
   experience: WorkExperience[];
 };
+
+export type ProjectMockupVariant =
+  | "grid-short"
+  | "grid-full"
+  | "grid-medium"
+  | "bars-short-full"
+  | "bars-medium-short"
+  | "bars-full-short";
+
+export type CaseStudySection = {
+  title: string;
+  content: string;
+};
+
+export type ProjectLinks = {
+  github?: string;
+  live?: string;
+};
+
+export type Project = {
+  slug: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  techStack: string[];
+  browserUrl: string;
+  mockupVariant: ProjectMockupVariant;
+  role: string;
+  timeline: string;
+  links: ProjectLinks;
+  heroBrowserUrl: string;
+  sections: CaseStudySection[];
+};
