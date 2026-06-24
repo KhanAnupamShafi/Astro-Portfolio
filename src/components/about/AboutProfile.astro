@@ -8,18 +8,33 @@ type Props = {
   location: string;
   availability: string;
   socialLinks: SocialLink[];
+  photoUrl?: string;
 };
 
-const { initials, location, availability, socialLinks } = Astro.props;
+const { initials, location, availability, socialLinks, photoUrl } = Astro.props;
 ---
 
 <aside class="flex flex-col gap-4">
-  <div
-    class="grid size-[120px] place-items-center rounded-lg border border-border bg-gradient-to-br from-surface-secondary to-surface text-2xl font-semibold text-text-muted"
-    aria-hidden="true"
-  >
-    {initials}
-  </div>
+  {
+    photoUrl ? (
+      <img
+        src={photoUrl}
+        alt=""
+        width={120}
+        height={120}
+        loading="lazy"
+        decoding="async"
+        class="size-[120px] rounded-lg border border-border object-cover"
+      />
+    ) : (
+      <div
+        class="grid size-[120px] place-items-center rounded-lg border border-border bg-gradient-to-br from-surface-secondary to-surface text-2xl font-semibold text-text-muted"
+        aria-hidden="true"
+      >
+        {initials}
+      </div>
+    )
+  }
 
   <div>
     <p class="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-text-muted">

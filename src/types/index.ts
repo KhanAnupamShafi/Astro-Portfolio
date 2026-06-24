@@ -1,3 +1,73 @@
+import type { PortableTextBlock } from "@portabletext/types";
+import type { SanityImageSource } from "@sanity/image-url";
+
+export type SanityImage = SanityImageSource;
+
+export type SanityAboutDocument = {
+  name: string;
+  title: string;
+  bio: string;
+  initials: string;
+  location?: string;
+  timezone?: string;
+  email?: string;
+  githubUrl?: string;
+  linkedinUrl?: string;
+  twitterUrl?: string;
+  availability?: string;
+  skillCategories?: SkillCategory[];
+  photo?: SanityImage;
+};
+
+export type SanityExperienceDocument = {
+  _id: string;
+  role: string;
+  company: string;
+  companyUrl?: string;
+  startDate: string;
+  endDate?: string;
+  current?: boolean;
+  description?: string;
+  highlights?: string[];
+  techStack?: string[];
+};
+
+export type SanityProjectListItem = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  techStack?: string[];
+  coverImage?: SanityImage;
+  liveUrl?: string;
+  githubUrl?: string;
+};
+
+export type SanityProjectDocument = SanityProjectListItem & {
+  longDescription?: PortableTextBlock[];
+};
+
+export type SanityPostDocument = {
+  _id: string;
+  title: string;
+  slug: string;
+  publishedAt: string;
+  thumbLabel: string;
+  excerpt: string;
+  tags?: string[];
+  body?: PortableTextBlock[];
+};
+
+export type SanityCertificateDocument = {
+  _id: string;
+  title: string;
+  issuer: string;
+  issuedAt: string;
+  iconLabel: string;
+  credentialUrl?: string;
+  image?: SanityImage;
+};
+
 export type SocialLink = {
   label: string;
   href: string;
@@ -18,6 +88,7 @@ export type FeaturedProject = {
   mockupUrl: string;
   browserUrl: string;
   imageSeed: string;
+  coverImageUrl?: string;
 };
 
 export type HomePageData = {
@@ -79,13 +150,15 @@ export type Project = {
   shortDescription: string;
   description: string;
   techStack: string[];
-  browserUrl: string;
-  mockupVariant: ProjectMockupVariant;
-  role: string;
-  timeline: string;
   links: ProjectLinks;
-  heroBrowserUrl: string;
-  sections: CaseStudySection[];
+  coverImageUrl?: string;
+  bodyHtml?: string;
+  browserUrl?: string;
+  mockupVariant?: ProjectMockupVariant;
+  role?: string;
+  timeline?: string;
+  heroBrowserUrl?: string;
+  sections?: CaseStudySection[];
 };
 
 export type Certificate = {

@@ -2,13 +2,21 @@
 import ProjectCard from "@/components/projects/ProjectCard.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { projectsMock } from "@/lib/mock/projects";
+import { mapProjectListItem } from "@/lib/mappers";
+import { ABOUT_QUERY, ALL_PROJECTS_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
+import type { SanityAboutDocument, SanityProjectListItem } from "@/types";
 
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const projectDocs = await sanityClient.fetch<SanityProjectListItem[]>(ALL_PROJECTS_QUERY);
+const projects = projectDocs.map(mapProjectListItem);
+
+const ownerName = about?.name ?? "Portfolio";
 const pageDescription =
   "Production systems, internal tools, and side projects — focused on full-stack delivery and clean architecture.";
 ---
 
-<BaseLayout title="Selected projects — Khan Anupam Shafi" description={pageDescription}>
+<BaseLayout title={`Selected projects — ${ownerName}`} description={pageDescription}>
   <section class="py-[clamp(3rem,8vw,6rem)]">
     <Container>
       <h1
@@ -21,9 +29,9 @@ const pageDescription =
       </p>
 
       {
-        projectsMock.length > 0 ? (
+        projects.length > 0 ? (
           <div class="grid gap-6 min-[768px]:grid-cols-2 min-[1024px]:grid-cols-3">
-            {projectsMock.map((project) => (
+            {projects.map((project) => (
               <ProjectCard project={project} />
             ))}
           </div>

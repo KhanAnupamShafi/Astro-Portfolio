@@ -60,6 +60,22 @@ const { project, reversed = false } = Astro.props;
       reversed ? "min-[900px]:order-1" : "min-[900px]:order-2",
     ]}
   >
-    <ProjectMockup browserUrl={project.browserUrl} imageSeed={project.imageSeed} />
+    {
+      project.coverImageUrl ? (
+        <div class="overflow-hidden rounded-lg border border-border">
+          <img
+            src={project.coverImageUrl}
+            alt=""
+            width={800}
+            height={500}
+            loading="lazy"
+            decoding="async"
+            class="aspect-[16/10] w-full object-cover"
+          />
+        </div>
+      ) : (
+        <ProjectMockup browserUrl={project.browserUrl} imageSeed={project.imageSeed} />
+      )
+    }
   </div>
 </article>

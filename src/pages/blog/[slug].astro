@@ -2,28 +2,38 @@
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
 import Tag from "@/components/ui/Tag.astro";
-import { getAllPostSlugs, getPostBySlug } from "@/lib/mock/posts";
+import { mapBlogPost } from "@/lib/mappers";
+import { ABOUT_QUERY, POST_BY_SLUG_QUERY, POST_SLUGS_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
 import { formatDate } from "@/lib/utils";
 import type { GetStaticPaths } from "astro";
+import type { SanityAboutDocument, SanityPostDocument } from "@/types";
 
-export const getStaticPaths = (() => {
-  return getAllPostSlugs().map((slug) => ({
+export const getStaticPaths = (async () => {
+  const slugs = await sanityClient.fetch<{ slug: string }[]>(POST_SLUGS_QUERY);
+
+  return slugs.map(({ slug }) => ({
     params: { slug },
   }));
 }) satisfies GetStaticPaths;
 
 const { slug } = Astro.params;
-const post = slug ? getPostBySlug(slug) : undefined;
+const postDoc = slug
+  ? await sanityClient.fetch<SanityPostDocument | null>(POST_BY_SLUG_QUERY, { slug })
+  : null;
 
-if (!post) {
+if (!postDoc) {
   return new Response(null, { status: 404, statusText: "Not found" });
 }
 
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const post = mapBlogPost(postDoc);
+const ownerName = about?.name ?? "Portfolio";
 const formattedDate = formatDate(post.publishedAt);
 ---
 
 <BaseLayout
-  title={`${post.title} — Khan Anupam Shafi`}
+  title={`${post.title} — ${ownerName}`}
   description={post.excerpt}
   backLink={{ href: "/blog", label: "← Back to blog" }}
 >

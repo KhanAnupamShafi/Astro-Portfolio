@@ -2,13 +2,23 @@
 import CertificateCard from "@/components/certificates/CertificateCard.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { certificatesMock } from "@/lib/mock/certificates";
+import { mapCertificate } from "@/lib/mappers";
+import { ABOUT_QUERY, ALL_CERTIFICATES_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
+import type { SanityAboutDocument, SanityCertificateDocument } from "@/types";
 
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const certificateDocs = await sanityClient.fetch<SanityCertificateDocument[]>(
+  ALL_CERTIFICATES_QUERY,
+);
+const certificates = certificateDocs.map(mapCertificate);
+
+const ownerName = about?.name ?? "Portfolio";
 const pageDescription =
   "Professional credentials and completed courses relevant to full-stack engineering.";
 ---
 
-<BaseLayout title="Certificates — Khan Anupam Shafi" description={pageDescription}>
+<BaseLayout title={`Certificates — ${ownerName}`} description={pageDescription}>
   <section class="py-[clamp(3rem,8vw,6rem)]">
     <Container>
       <h1
@@ -21,9 +31,9 @@ const pageDescription =
       </p>
 
       {
-        certificatesMock.length > 0 ? (
+        certificates.length > 0 ? (
           <div class="grid gap-6 min-[768px]:grid-cols-2">
-            {certificatesMock.map((certificate) => (
+            {certificates.map((certificate) => (
               <CertificateCard certificate={certificate} />
             ))}
           </div>

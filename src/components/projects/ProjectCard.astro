@@ -14,7 +14,24 @@ const { project } = Astro.props;
   href={`/projects/${project.slug}`}
   class="group overflow-hidden rounded-lg border border-border bg-surface transition-colors duration-150 hover:border-[color-mix(in_oklch,var(--color-border),var(--color-text-primary)_25%)]"
 >
-  <ProjectWireframeMockup browserUrl={project.browserUrl} variant={project.mockupVariant} />
+  {
+    project.coverImageUrl ? (
+      <img
+        src={project.coverImageUrl}
+        alt=""
+        width={800}
+        height={450}
+        loading="lazy"
+        decoding="async"
+        class="aspect-[16/10] w-full object-cover"
+      />
+    ) : (
+      <ProjectWireframeMockup
+        browserUrl={project.browserUrl ?? project.slug}
+        variant={project.mockupVariant ?? "grid-short"}
+      />
+    )
+  }
 
   <div class="p-5">
     <h2 class="mb-2 text-base font-semibold tracking-[-0.02em] text-text-primary">

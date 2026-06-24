@@ -2,9 +2,23 @@
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import FeaturedProjects from "@/components/home/FeaturedProjects.astro";
 import Hero from "@/components/home/Hero.astro";
-import { homePageMock } from "@/lib/mock/home";
+import { buildSocialLinks, mapFeaturedProject } from "@/lib/mappers";
+import { ABOUT_QUERY, FEATURED_PROJECTS_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
+import type { SanityAboutDocument, SanityProjectListItem } from "@/types";
 
-const { name, title, bio, availability, socialLinks, featuredProjects } = homePageMock;
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const featuredProjectDocs = await sanityClient.fetch<SanityProjectListItem[]>(
+  FEATURED_PROJECTS_QUERY,
+);
+
+if (!about) {
+  throw new Error("About document not found in Sanity. Create the About singleton in Studio.");
+}
+
+const { name, title, bio, availability } = about;
+const socialLinks = buildSocialLinks(about);
+const featuredProjects = featuredProjectDocs.map(mapFeaturedProject);
 ---
 
 <BaseLayout
@@ -16,7 +30,7 @@ const { name, title, bio, availability, socialLinks, featuredProjects } = homePa
     name={name}
     title={title}
     bio={bio}
-    availability={availability}
+    availability={availability ?? ""}
     socialLinks={socialLinks}
   />
   <FeaturedProjects projects={featuredProjects} />

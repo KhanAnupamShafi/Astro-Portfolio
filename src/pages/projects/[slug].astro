@@ -1,24 +1,34 @@
 ---
-import ProjectCaseStudy from "@/components/projects/ProjectCaseStudy.astro";
+import ButtonLink from "@/components/ui/ButtonLink.astro";
 import ProjectMetaRow from "@/components/projects/ProjectMetaRow.astro";
 import ProjectWireframeMockup from "@/components/projects/ProjectWireframeMockup.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { getAllProjectSlugs, getProjectBySlug } from "@/lib/mock/projects";
+import { mapProjectDetail } from "@/lib/mappers";
+import { PROJECT_BY_SLUG_QUERY, PROJECT_SLUGS_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
 import type { GetStaticPaths } from "astro";
+import type { SanityProjectDocument } from "@/types";
 
-export const getStaticPaths = (() => {
-  return getAllProjectSlugs().map((slug) => ({
+export const getStaticPaths = (async () => {
+  const slugs = await sanityClient.fetch<{ slug: string }[]>(PROJECT_SLUGS_QUERY);
+
+  return slugs.map(({ slug }) => ({
     params: { slug },
   }));
 }) satisfies GetStaticPaths;
 
 const { slug } = Astro.params;
-const project = slug ? getProjectBySlug(slug) : undefined;
+const projectDoc = slug
+  ? await sanityClient.fetch<SanityProjectDocument | null>(PROJECT_BY_SLUG_QUERY, { slug })
+  : null;
 
-if (!project) {
+if (!projectDoc) {
   return new Response(null, { status: 404, statusText: "Not found" });
 }
+
+const project = mapProjectDetail(projectDoc);
+const { links } = project;
 ---
 
 <BaseLayout
@@ -44,15 +54,51 @@ if (!project) {
       </header>
 
       <div class="mb-10 overflow-hidden rounded-lg border border-border">
-        <ProjectWireframeMockup
-          browserUrl={project.heroBrowserUrl}
-          variant={project.mockupVariant}
-          layout="hero"
-        />
+        {
+          project.coverImageUrl ? (
+            <img
+              src={project.coverImageUrl}
+              alt=""
+              width={1200}
+              height={675}
+              loading="lazy"
+              decoding="async"
+              class="aspect-[16/9] w-full object-cover"
+            />
+          ) : (
+            <ProjectWireframeMockup
+              browserUrl={project.slug}
+              variant={project.mockupVariant ?? "grid-full"}
+              layout="hero"
+            />
+          )
+        }
       </div>
 
       <ProjectMetaRow project={project} />
-      <ProjectCaseStudy sections={project.sections} links={project.links} />
+
+      {
+        project.bodyHtml ? (
+          <div class="prose max-w-[65ch]" set:html={project.bodyHtml} />
+        ) : null
+      }
+
+      {
+        (links.live || links.github) && (
+          <div class="mt-12 flex flex-wrap gap-3">
+            {links.live && (
+              <ButtonLink href={links.live} variant="primary">
+                View live demo
+              </ButtonLink>
+            )}
+            {links.github && (
+              <ButtonLink href={links.github} variant="secondary">
+                Source on GitHub
+              </ButtonLink>
+            )}
+          </div>
+        )
+      }
     </Container>
   </article>
 </BaseLayout>

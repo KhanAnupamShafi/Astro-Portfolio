@@ -5,19 +5,38 @@ import ExperienceTimeline from "@/components/about/ExperienceTimeline.astro";
 import SkillsGrid from "@/components/about/SkillsGrid.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { aboutPageMock } from "@/lib/mock/about";
+import {
+  buildSocialLinks,
+  getAboutPhotoUrl,
+  mapExperience,
+  mapSkillCategories,
+} from "@/lib/mappers";
+import { ABOUT_QUERY, ALL_EXPERIENCE_QUERY } from "@/lib/queries";
+import { sanityClient } from "@/lib/sanity";
+import type { SanityAboutDocument, SanityExperienceDocument } from "@/types";
+
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const experienceDocs = await sanityClient.fetch<SanityExperienceDocument[]>(
+  ALL_EXPERIENCE_QUERY,
+);
+
+if (!about) {
+  throw new Error("About document not found in Sanity. Create the About singleton in Studio.");
+}
 
 const {
   name,
   title,
   bio,
   initials,
-  location,
-  availability,
-  socialLinks,
-  skillCategories,
-  experience,
-} = aboutPageMock;
+  location = "",
+  availability = "",
+} = about;
+
+const socialLinks = buildSocialLinks(about);
+const skillCategories = mapSkillCategories(about.skillCategories);
+const experience = mapExperience(experienceDocs);
+const photoUrl = getAboutPhotoUrl(about);
 ---
 
 <BaseLayout
@@ -33,6 +52,7 @@ const {
           location={location}
           availability={availability}
           socialLinks={socialLinks}
+          photoUrl={photoUrl}
         />
 
         <div>
