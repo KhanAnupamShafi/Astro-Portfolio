@@ -55,6 +55,7 @@ export type SanityPostDocument = {
   thumbLabel: string;
   excerpt: string;
   tags?: string[];
+  coverImage?: SanityImage;
   body?: PortableTextBlock[];
 };
 
@@ -159,6 +160,7 @@ export type Project = {
   timeline?: string;
   heroBrowserUrl?: string;
   sections?: CaseStudySection[];
+  ogImageUrl?: string;
 };
 
 export type Certificate = {
@@ -176,4 +178,5 @@ export type BlogPost = {
   excerpt: string;
   tags: string[];
   bodyHtml: string;
+  ogImageUrl?: string;
 };

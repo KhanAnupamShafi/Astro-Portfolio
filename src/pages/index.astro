@@ -2,7 +2,7 @@
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import FeaturedProjects from "@/components/home/FeaturedProjects.astro";
 import Hero from "@/components/home/Hero.astro";
-import { buildSocialLinks, mapFeaturedProject } from "@/lib/mappers";
+import { buildSocialLinks, getAboutOgImageUrl, mapFeaturedProject } from "@/lib/mappers";
 import { ABOUT_QUERY, FEATURED_PROJECTS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { SanityAboutDocument, SanityProjectListItem } from "@/types";
@@ -19,11 +19,15 @@ if (!about) {
 const { name, title, bio, availability } = about;
 const socialLinks = buildSocialLinks(about);
 const featuredProjects = featuredProjectDocs.map(mapFeaturedProject);
+const ogImageUrl = getAboutOgImageUrl(about);
 ---
 
 <BaseLayout
   title={`${name} — ${title}`}
   description={bio}
+  image={ogImageUrl}
+  imageAlt={name}
+  siteName={name}
   socialLinks={socialLinks}
 >
   <Hero

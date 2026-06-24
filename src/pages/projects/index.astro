@@ -2,7 +2,7 @@
 import ProjectCard from "@/components/projects/ProjectCard.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { mapProjectListItem } from "@/lib/mappers";
+import { getAboutOgImageUrl, mapProjectListItem } from "@/lib/mappers";
 import { ABOUT_QUERY, ALL_PROJECTS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { SanityAboutDocument, SanityProjectListItem } from "@/types";
@@ -14,9 +14,16 @@ const projects = projectDocs.map(mapProjectListItem);
 const ownerName = about?.name ?? "Portfolio";
 const pageDescription =
   "Production systems, internal tools, and side projects — focused on full-stack delivery and clean architecture.";
+const ogImageUrl = about ? getAboutOgImageUrl(about) : undefined;
 ---
 
-<BaseLayout title={`Selected projects — ${ownerName}`} description={pageDescription}>
+<BaseLayout
+  title={`Selected projects — ${ownerName}`}
+  description={pageDescription}
+  image={ogImageUrl}
+  imageAlt={ownerName}
+  siteName={ownerName}
+>
   <section class="py-[clamp(3rem,8vw,6rem)]">
     <Container>
       <h1

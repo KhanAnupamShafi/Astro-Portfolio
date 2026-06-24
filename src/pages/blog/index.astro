@@ -2,7 +2,7 @@
 import PostCard from "@/components/blog/PostCard.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { mapBlogPostListItem } from "@/lib/mappers";
+import { getAboutOgImageUrl, mapBlogPostListItem } from "@/lib/mappers";
 import { ABOUT_QUERY, ALL_POSTS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { SanityAboutDocument, SanityPostDocument } from "@/types";
@@ -14,9 +14,16 @@ const posts = postDocs.map(mapBlogPostListItem);
 const ownerName = about?.name ?? "Portfolio";
 const pageDescription =
   "Notes on backend systems, frontend architecture, and the tools I use to ship production software.";
+const ogImageUrl = about ? getAboutOgImageUrl(about) : undefined;
 ---
 
-<BaseLayout title={`Blog — ${ownerName}`} description={pageDescription}>
+<BaseLayout
+  title={`Blog — ${ownerName}`}
+  description={pageDescription}
+  image={ogImageUrl}
+  imageAlt={ownerName}
+  siteName={ownerName}
+>
   <section class="py-[clamp(3rem,8vw,6rem)]">
     <Container>
       <h1

@@ -4,11 +4,11 @@ import ProjectMetaRow from "@/components/projects/ProjectMetaRow.astro";
 import ProjectWireframeMockup from "@/components/projects/ProjectWireframeMockup.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { mapProjectDetail } from "@/lib/mappers";
-import { PROJECT_BY_SLUG_QUERY, PROJECT_SLUGS_QUERY } from "@/lib/queries";
+import { getAboutOgImageUrl, mapProjectDetail } from "@/lib/mappers";
+import { ABOUT_QUERY, PROJECT_BY_SLUG_QUERY, PROJECT_SLUGS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { GetStaticPaths } from "astro";
-import type { SanityProjectDocument } from "@/types";
+import type { SanityAboutDocument, SanityProjectDocument } from "@/types";
 
 export const getStaticPaths = (async () => {
   const slugs = await sanityClient.fetch<{ slug: string }[]>(PROJECT_SLUGS_QUERY);
@@ -28,12 +28,18 @@ if (!projectDoc) {
 }
 
 const project = mapProjectDetail(projectDoc);
+const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
+const ownerName = about?.name ?? "Portfolio";
+const ogImageUrl = project.ogImageUrl ?? (about ? getAboutOgImageUrl(about) : undefined);
 const { links } = project;
 ---
 
 <BaseLayout
   title={`${project.title} — Case Study`}
   description={project.description}
+  image={ogImageUrl}
+  imageAlt={project.title}
+  siteName={ownerName}
   backLink={{ href: "/projects", label: "← All projects" }}
   footerActionLink={{ href: "/projects", label: "More projects →" }}
 >

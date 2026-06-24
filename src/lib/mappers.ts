@@ -1,4 +1,5 @@
 import { urlFor } from "@/lib/sanity";
+import { buildOgImageUrl } from "@/lib/seo";
 import { formatDateRange, formatMonthYear, portableTextToHtml } from "@/lib/utils";
 import type {
   BlogPost,
@@ -105,6 +106,7 @@ export const mapProjectDetail = (project: SanityProjectDocument): Project => ({
   coverImageUrl: project.coverImage
     ? urlFor(project.coverImage).width(1200).height(675).format("webp").url()
     : undefined,
+  ogImageUrl: buildOgImageUrl(project.coverImage),
   bodyHtml: portableTextToHtml(project.longDescription),
 });
 
@@ -116,6 +118,7 @@ export const mapBlogPost = (post: SanityPostDocument): BlogPost => ({
   excerpt: post.excerpt,
   tags: post.tags ?? [],
   bodyHtml: portableTextToHtml(post.body),
+  ogImageUrl: buildOgImageUrl(post.coverImage),
 });
 
 export const mapBlogPostListItem = (post: SanityPostDocument): BlogPost => ({
@@ -137,3 +140,6 @@ export const mapCertificate = (certificate: SanityCertificateDocument): Certific
 
 export const getAboutPhotoUrl = (about: SanityAboutDocument): string | undefined =>
   about.photo ? urlFor(about.photo).width(480).height(480).format("webp").url() : undefined;
+
+export const getAboutOgImageUrl = (about: SanityAboutDocument): string | undefined =>
+  buildOgImageUrl(about.photo);

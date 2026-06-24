@@ -2,7 +2,7 @@
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
 import Tag from "@/components/ui/Tag.astro";
-import { mapBlogPost } from "@/lib/mappers";
+import { getAboutOgImageUrl, mapBlogPost } from "@/lib/mappers";
 import { ABOUT_QUERY, POST_BY_SLUG_QUERY, POST_SLUGS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import { formatDate } from "@/lib/utils";
@@ -29,12 +29,17 @@ if (!postDoc) {
 const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
 const post = mapBlogPost(postDoc);
 const ownerName = about?.name ?? "Portfolio";
+const ogImageUrl = post.ogImageUrl ?? (about ? getAboutOgImageUrl(about) : undefined);
 const formattedDate = formatDate(post.publishedAt);
 ---
 
 <BaseLayout
   title={`${post.title} — ${ownerName}`}
   description={post.excerpt}
+  image={ogImageUrl}
+  imageAlt={post.title}
+  type="article"
+  siteName={ownerName}
   backLink={{ href: "/blog", label: "← Back to blog" }}
 >
   <article class="py-[clamp(3rem,8vw,6rem)]">

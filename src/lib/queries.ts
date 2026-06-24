@@ -108,6 +108,7 @@ export const POST_BY_SLUG_QUERY = `
     thumbLabel,
     excerpt,
     tags,
+    coverImage,
     body
   }
 `;

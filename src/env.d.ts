@@ -4,4 +4,5 @@ interface ImportMetaEnv {
   readonly SANITY_PROJECT_ID: string;
   readonly SANITY_DATASET: string;
   readonly SANITY_API_TOKEN: string;
+  readonly SITE_URL: string;
 }

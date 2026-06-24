@@ -2,7 +2,7 @@
 import CertificateCard from "@/components/certificates/CertificateCard.astro";
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import Container from "@/components/layout/Container.astro";
-import { mapCertificate } from "@/lib/mappers";
+import { getAboutOgImageUrl, mapCertificate } from "@/lib/mappers";
 import { ABOUT_QUERY, ALL_CERTIFICATES_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { SanityAboutDocument, SanityCertificateDocument } from "@/types";
@@ -16,9 +16,16 @@ const certificates = certificateDocs.map(mapCertificate);
 const ownerName = about?.name ?? "Portfolio";
 const pageDescription =
   "Professional credentials and completed courses relevant to full-stack engineering.";
+const ogImageUrl = about ? getAboutOgImageUrl(about) : undefined;
 ---
 
-<BaseLayout title={`Certificates — ${ownerName}`} description={pageDescription}>
+<BaseLayout
+  title={`Certificates — ${ownerName}`}
+  description={pageDescription}
+  image={ogImageUrl}
+  imageAlt={ownerName}
+  siteName={ownerName}
+>
   <section class="py-[clamp(3rem,8vw,6rem)]">
     <Container>
       <h1

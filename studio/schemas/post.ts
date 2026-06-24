@@ -34,6 +34,13 @@ export const post = defineType({
       validation: (rule) => rule.required().max(40),
     }),
     defineField({
+      name: 'coverImage',
+      title: 'Cover image',
+      type: 'image',
+      options: {hotspot: true},
+      description: 'Optional — used for social sharing previews (Open Graph)',
+    }),
+    defineField({
       name: 'excerpt',
       title: 'Excerpt',
       type: 'text',
