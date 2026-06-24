@@ -42,7 +42,7 @@ export const certificate = defineType({
       title: 'Image',
       type: 'image',
       options: {hotspot: true},
-      description: 'Optional — the current UI uses the badge label instead',
+      description: 'Optional badge image — falls back to badge label when empty',
     }),
   ],
   orderings: [
