@@ -3,6 +3,7 @@ import Container from "@/components/layout/Container.astro";
 import ButtonLink from "@/components/ui/ButtonLink.astro";
 import ThemeToggle from "@/components/ui/ThemeToggle.astro";
 import { isNavActive, navItems } from "@/lib/nav";
+import Award from "lucide-astro/Award";
 import FileText from "lucide-astro/FileText";
 import Home from "lucide-astro/Home";
 import LayoutGrid from "lucide-astro/LayoutGrid";
@@ -26,6 +27,7 @@ const iconMap = {
   user: User,
   grid: LayoutGrid,
   file: FileText,
+  award: Award,
 } as const;
 ---
 

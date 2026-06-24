@@ -1,0 +1,33 @@
+---
+import PostCard from "@/components/blog/PostCard.astro";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Container from "@/components/layout/Container.astro";
+import { postsMock } from "@/lib/mock/posts";
+
+const pageDescription =
+  "Notes on backend systems, frontend architecture, and the tools I use to ship production software.";
+---
+
+<BaseLayout title="Blog — Khan Anupam Shafi" description={pageDescription}>
+  <section class="py-[clamp(3rem,8vw,6rem)]">
+    <Container>
+      <h1
+        class="mb-12 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
+      >
+        Writing about engineering
+      </h1>
+
+      {
+        postsMock.length > 0 ? (
+          <div>
+            {postsMock.map((post) => (
+              <PostCard post={post} />
+            ))}
+          </div>
+        ) : (
+          <p class="text-text-muted">No posts yet.</p>
+        )
+      }
+    </Container>
+  </section>
+</BaseLayout>

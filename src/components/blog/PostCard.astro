@@ -1,0 +1,56 @@
+---
+import Tag from "@/components/ui/Tag.astro";
+import { formatDate } from "@/lib/utils";
+import type { BlogPost } from "@/types";
+
+type Props = {
+  post: BlogPost;
+};
+
+const { post } = Astro.props;
+const postHref = `/blog/${post.slug}`;
+const formattedDate = formatDate(post.publishedAt);
+---
+
+<article
+  class="flex flex-col gap-5 border-b border-border py-8 first:pt-0 min-[768px]:flex-row min-[768px]:items-start min-[768px]:gap-8"
+>
+  <a
+    href={postHref}
+    tabindex="-1"
+    aria-hidden="true"
+    class="flex h-[140px] w-full shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary px-4 text-center transition-colors duration-150 hover:border-[color-mix(in_oklch,var(--color-border),var(--color-text-primary)_25%)] min-[768px]:h-[128px] min-[768px]:w-[200px]"
+  >
+    <span class="text-sm font-semibold tracking-[-0.02em] text-text-primary min-[768px]:text-base">
+      {post.thumbLabel}
+    </span>
+  </a>
+
+  <div class="min-w-0 flex-1">
+    <time
+      datetime={post.publishedAt}
+      class="mb-2 block font-mono text-xs text-text-muted"
+    >
+      {formattedDate}
+    </time>
+
+    <h2 class="mb-2 text-lg font-semibold tracking-[-0.02em] text-text-primary min-[768px]:text-xl">
+      <a
+        href={postHref}
+        class="transition-colors duration-150 hover:text-accent"
+      >
+        {post.title}
+      </a>
+    </h2>
+
+    <p class="mb-4 text-sm leading-relaxed text-text-muted min-[768px]:text-base">
+      {post.excerpt}
+    </p>
+
+    <div class="flex flex-wrap gap-1.5">
+      {post.tags.map((tag) => (
+        <Tag label={tag} />
+      ))}
+    </div>
+  </div>
+</article>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Container from "@/components/layout/Container.astro";
+import Tag from "@/components/ui/Tag.astro";
+import { getAllPostSlugs, getPostBySlug } from "@/lib/mock/posts";
+import { formatDate } from "@/lib/utils";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths = (() => {
+  return getAllPostSlugs().map((slug) => ({
+    params: { slug },
+  }));
+}) satisfies GetStaticPaths;
+
+const { slug } = Astro.params;
+const post = slug ? getPostBySlug(slug) : undefined;
+
+if (!post) {
+  return new Response(null, { status: 404, statusText: "Not found" });
+}
+
+const formattedDate = formatDate(post.publishedAt);
+---
+
+<BaseLayout
+  title={`${post.title} — Khan Anupam Shafi`}
+  description={post.excerpt}
+  backLink={{ href: "/blog", label: "← Back to blog" }}
+>
+  <article class="py-[clamp(3rem,8vw,6rem)]">
+    <Container>
+      <div class="mx-auto w-full max-w-[680px]">
+        <header class="mb-10">
+          <time datetime={post.publishedAt} class="mb-3 block font-mono text-xs text-text-muted">
+            {formattedDate}
+          </time>
+          <h1
+            class="mb-4 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
+          >
+            {post.title}
+          </h1>
+          <div class="flex flex-wrap gap-1.5">
+            {post.tags.map((tag) => (
+              <Tag label={tag} />
+            ))}
+          </div>
+        </header>
+
+        <div class="prose" set:html={post.bodyHtml} />
+      </div>
+    </Container>
+  </article>
+</BaseLayout>

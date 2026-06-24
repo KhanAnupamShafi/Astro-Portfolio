@@ -1,7 +1,7 @@
 export type NavItem = {
   label: string;
   href: string;
-  icon: "home" | "user" | "grid" | "file";
+  icon: "home" | "user" | "grid" | "file" | "award";
 };
 
 export const navItems: NavItem[] = [
@@ -9,6 +9,7 @@ export const navItems: NavItem[] = [
   { label: "About", href: "/about", icon: "user" },
   { label: "Work", href: "/projects", icon: "grid" },
   { label: "Blog", href: "/blog", icon: "file" },
+  { label: "Certificates", href: "/certificates", icon: "award" },
 ];
 
 export const isNavActive = (href: string, pathname: string): boolean => {

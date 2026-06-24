@@ -87,3 +87,20 @@ export type Project = {
   heroBrowserUrl: string;
   sections: CaseStudySection[];
 };
+
+export type Certificate = {
+  iconLabel: string;
+  title: string;
+  issuer: string;
+  dateLabel: string;
+};
+
+export type BlogPost = {
+  slug: string;
+  thumbLabel: string;
+  publishedAt: string;
+  title: string;
+  excerpt: string;
+  tags: string[];
+  bodyHtml: string;
+};

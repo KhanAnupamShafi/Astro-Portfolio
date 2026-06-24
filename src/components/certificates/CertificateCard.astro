@@ -1,0 +1,28 @@
+---
+import type { Certificate } from "@/types";
+
+type Props = {
+  certificate: Certificate;
+};
+
+const { certificate } = Astro.props;
+---
+
+<article
+  class="flex gap-4 rounded-lg border border-border bg-surface p-5 transition-colors duration-150"
+>
+  <div
+    class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] font-medium text-text-primary"
+    aria-hidden="true"
+  >
+    {certificate.iconLabel}
+  </div>
+
+  <div class="flex min-w-0 flex-col gap-1">
+    <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
+      {certificate.title}
+    </h2>
+    <p class="text-sm text-text-muted">{certificate.issuer}</p>
+    <p class="mt-1 font-mono text-xs text-text-muted">{certificate.dateLabel}</p>
+  </div>
+</article>

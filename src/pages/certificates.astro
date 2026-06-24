@@ -1,0 +1,36 @@
+---
+import CertificateCard from "@/components/certificates/CertificateCard.astro";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Container from "@/components/layout/Container.astro";
+import { certificatesMock } from "@/lib/mock/certificates";
+
+const pageDescription =
+  "Professional credentials and completed courses relevant to full-stack engineering.";
+---
+
+<BaseLayout title="Certificates — Khan Anupam Shafi" description={pageDescription}>
+  <section class="py-[clamp(3rem,8vw,6rem)]">
+    <Container>
+      <h1
+        class="mb-3 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
+      >
+        Certificates
+      </h1>
+      <p class="mb-12 max-w-[52ch] text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.65] text-text-muted">
+        {pageDescription}
+      </p>
+
+      {
+        certificatesMock.length > 0 ? (
+          <div class="grid gap-6 min-[768px]:grid-cols-2">
+            {certificatesMock.map((certificate) => (
+              <CertificateCard certificate={certificate} />
+            ))}
+          </div>
+        ) : (
+          <p class="text-center text-text-muted">No certificates yet.</p>
+        )
+      }
+    </Container>
+  </section>
+</BaseLayout>
