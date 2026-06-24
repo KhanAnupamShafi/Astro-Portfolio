@@ -1,48 +1,44 @@
-# Memory — Project move to `app/` + Phase 1 setup
+# Memory — Sanity Studio Setup (Phase 1, Step 02)
 
-Last updated: Tuesday Jun 23, 2026
+Last updated: 2026-06-24
 
 ## What was built
 
-- Astro 7 app scaffolded with minimal template, TypeScript strict, Tailwind CSS v4 (`@tailwindcss/vite`).
-- **`app/astro.config.mjs`** — Tailwind plugin + `@/` alias → `src/`.
-- **`app/tsconfig.json`** — strict config + `@/*` path mapping.
-- **`app/src/styles/globals.css`** — full design tokens from context (`@theme`), Inter font imports, dark mode variable overrides.
-- **`app/src/env.d.ts`** — `ImportMetaEnv` for Sanity env vars.
-- **`app/.env.local`** — placeholder `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_TOKEN` (gitignored).
-- **`app/src/pages/index.astro`** — minimal placeholder page importing globals.css, token-based styling.
-- **`app/.gitignore`** — includes `.env.local`.
-- Dependencies installed: `@sanity/client`, `@sanity/image-url`, `@portabletext/to-html`, `lucide-astro`, `@fontsource/inter`, dev `sanity`.
-- **`app/context/progress-tracker.md`** — 01 Project Setup marked complete.
+- Initialized Sanity Studio in `studio/` via `npm create sanity@latest` — project `dper7lh5`, dataset `production`, clean template.
+- Created `studio/schemas/index.ts` — exports empty `schemaTypes` array (schemas come in step 04).
+- Updated `studio/sanity.config.ts` — imports from `./schemas`, name `portfolio`, title `Portfolio Studio`, `structureTool()` only (Vision removed).
+- Removed template `studio/schemaTypes/` folder (project uses `schemas/` per architecture).
+- Uninstalled `@sanity/vision` from `studio/package.json` (removed refractor dependency chain).
+- Updated `context/progress-tracker.md` — 02 checked off; next is 03 Base Layout + Navbar.
 
 ## Decisions made
 
-- **Project root is now `app/`** — user is consolidating the repo so all code, context (`AGENTS.md`, `context/`, `designs/`), and tooling live under `app/`. Parent folder `portfolio/` is just a wrapper.
-- **Sanity Studio will live at `app/studio/`** (per build plan step 02) — not yet created.
-- **Dark mode tokens** use `.dark { ... }` on `<html>` instead of `@variant dark` from context files — Tailwind v4 rejected the documented `@variant` syntax at build time.
-- **No npm at repo wrapper root** — all install/dev/build commands run from `app/`.
+- Studio lives at `app/studio/` as a separate app from the Astro site — run with `cd app/studio && npm run dev` on port 3333.
+- Sanity project ID is `dper7lh5` (matches `app/.env.local` `SANITY_PROJECT_ID`) — not `9mbswxzp` (that ID failed CLI auth).
+- Vision plugin removed intentionally — `@sanity/vision` pulled in `refractor` via Vite pre-bundling and caused `Failed to fetch dynamically imported module` errors in dev. Studio works without the GROQ Vision tab; can be re-added later if needed.
+- Schemas folder is `studio/schemas/` not `studio/schemaTypes/` — matches `context/architecture.md`.
 
 ## Problems solved
 
-- Tailwind v4 build failure: `@variant dark (&:where(.dark, .dark *))` → replaced with plain `.dark { ... }` CSS variable overrides.
-- Failed background `npm install && npm run build` at `portfolio/` root (no `package.json`) — exit 254, thousands of tar errors. Harmless; no root `node_modules` left behind. Always run npm from `app/`.
+- Early `npm create sanity` attempts failed with "No projects found for current user" when using wrong project ID `9mbswxzp`.
+- Studio `refractor` / dynamic import errors caused by stale Vite cache (`studio/node_modules/.sanity`) plus multiple dev servers competing on port 3333. Fix: clear `.sanity` cache, run only one `npm run dev`, hard refresh browser (`Cmd+Shift+R`). Permanent fix applied: removed Vision plugin.
+- Port 3333 conflicts when a background Studio dev server was still running while user tried to start another.
 
 ## Current state
 
-- **Works:** `npm run build` and `npm run dev` from `app/` — static build succeeds, placeholder homepage renders.
-- **Partial:** `.env.local` still has placeholder Sanity project ID.
-- **Not started:** Sanity Studio (`02`), base layout/navbar (`03`), schemas, pages, polish.
-- **Repo layout:** `portfolio/app/` contains everything (src, context, designs, AGENTS.md, node_modules). `portfolio/` root is nearly empty.
+- **Astro site (01):** Scaffolded — `npm run dev` from `app/` on localhost:4321. Blank index page, globals.css with tokens, `.env.local` configured.
+- **Sanity Studio (02):** Scaffolded and configured — no content schemas yet. Studio should load at localhost:3333 after `cd app/studio && npm run dev`. No dev server running at end of session.
+- **Not started:** 03 Base Layout + Navbar, all Phase 2–4 features.
+- **ui-registry.md:** Empty — no components built yet.
 
 ## Next session starts with
 
-1. Run `/remember restore` and confirm state.
-2. Read `context/progress-tracker.md` — next feature is **02 Sanity Studio Setup**.
-3. From `app/`, initialize Sanity Studio at `studio/` per `context/build-plan.md`.
-4. Replace placeholder `SANITY_PROJECT_ID` in `.env.local` with real project ID.
+1. Run `/remember restore` (or read `memory.md` + `context/progress-tracker.md`).
+2. Implement **03 Base Layout + Navbar** per `context/build-plan.md`:
+   - `BaseLayout.astro`, `BaseHead.astro`, `Navbar.astro`, `Footer.astro`, `ThemeToggle.astro`, `SocialLinks.astro`
+   - Mock data only — no Sanity wiring yet.
+   - Verify dark mode toggle, active nav links, mobile (375px) and desktop layout.
 
 ## Open questions
 
-- Confirm Vercel deploy root should be `app/` (not parent `portfolio/`) when deploying.
-- `lucide-astro` is deprecated in favour of `@lucide/astro` — switch when building UI components, or stay on current package for now?
-- Context files (`architecture.md`, `AGENTS.md`) still reference paths like `src/` at repo root — may need path updates now that project root is `app/`.
+- None blocking. Vision plugin can be re-added later if GROQ explorer is wanted — would need clean Vite cache and single dev server instance to avoid refractor errors.
