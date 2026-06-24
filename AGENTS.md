@@ -98,14 +98,14 @@ context/         → All context files — the source of truth
 
 ```bash
 # Astro site
-npm run dev          # localhost:4321
+pnpm dev             # localhost:4321
 
 # Sanity Studio (separate terminal)
-cd studio && npm run dev    # localhost:3333
+cd studio && pnpm dev       # localhost:3333
 
 # Build
-npm run build
-npm run preview      # preview production build locally
+pnpm build
+pnpm preview         # preview production build locally
 ```
 
 ---

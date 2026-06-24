@@ -1,7 +1,9 @@
+import {
+  PRELOADER_COMPLETE_EVENT,
+  PRELOADER_SESSION_KEY,
+} from "@/lib/motion";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
-
-const SESSION_KEY = "portfolio-preloader-complete";
 
 type PagePreloaderProps = {
   brandLabel?: string;
@@ -9,7 +11,7 @@ type PagePreloaderProps = {
 
 const hasCompletedPreloader = (): boolean => {
   try {
-    return sessionStorage.getItem(SESSION_KEY) === "true";
+    return sessionStorage.getItem(PRELOADER_SESSION_KEY) === "true";
   } catch {
     return false;
   }
@@ -34,7 +36,8 @@ const PagePreloader = ({ brandLabel = "" }: PagePreloaderProps) => {
 
     const finish = () => {
       setProgress(100);
-      sessionStorage.setItem(SESSION_KEY, "true");
+      sessionStorage.setItem(PRELOADER_SESSION_KEY, "true");
+      window.dispatchEvent(new CustomEvent(PRELOADER_COMPLETE_EVENT));
 
       exitTimeoutId = setTimeout(
         () => {
@@ -116,7 +119,7 @@ const PagePreloader = ({ brandLabel = "" }: PagePreloaderProps) => {
         <div className="page-preloader__counter">
           <motion.span
             key={Math.round(progress)}
-            className="font-mono text-[clamp(3rem,12vw,5.5rem)] font-medium leading-none tracking-[-0.04em] text-text-primary tabular-nums"
+            className="font-mono text-[clamp(3rem,12vw,5.5rem)] leading-none tracking-[-0.04em] text-text-primary tabular-nums"
             initial={shouldReduceMotion ? false : { opacity: 0.4, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}

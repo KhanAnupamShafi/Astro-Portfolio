@@ -11,6 +11,10 @@ const env = loadEnv(process.env.NODE_ENV ?? "production", process.cwd(), "");
 // https://astro.build/config
 export default defineConfig({
   site: env.SITE_URL,
+  compressHTML: true,
+  build: {
+    inlineStylesheets: "always",
+  },
   integrations: [react(), ...(env.SITE_URL ? [sitemap()] : [])],
   vite: {
     plugins: [tailwindcss()],

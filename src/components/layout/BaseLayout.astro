@@ -2,7 +2,7 @@
 import BaseHead from "@/components/layout/BaseHead.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Navbar from "@/components/layout/Navbar.astro";
-import PagePreloader from "@/components/layout/PagePreloader";
+import PreloaderGate from "@/components/layout/PreloaderGate";
 import type { OgType } from "@/lib/seo";
 import type { SocialLink } from "@/types";
 import "@/styles/globals.css";
@@ -25,6 +25,7 @@ type Props = {
   type?: OgType;
   siteName?: string;
   brandLabel?: string;
+  preloadImage?: string;
   socialLinks?: SocialLink[];
   footerActionLink?: FooterActionLink;
   backLink?: BackLink;
@@ -38,6 +39,7 @@ const {
   type,
   siteName,
   brandLabel = "Khan Anupam Shafi",
+  preloadImage,
   socialLinks = [],
   footerActionLink,
   backLink,
@@ -54,6 +56,7 @@ const {
       imageAlt={imageAlt}
       type={type}
       siteName={siteName}
+      preloadImage={preloadImage}
     />
     <script is:inline>
       try {
@@ -74,8 +77,9 @@ const {
     </script>
   </head>
   <body>
-    <PagePreloader client:only="react" brandLabel={brandLabel} />
-    <div class="flex min-h-screen flex-col">
+    <PreloaderGate client:only="react" brandLabel={brandLabel} />
+    <div class="cursor-spotlight" aria-hidden="true"></div>
+    <div class="relative z-1 flex min-h-screen flex-col">
       <Navbar backLink={backLink} />
       <main class="flex-1">
         <slot />
@@ -86,5 +90,96 @@ const {
         actionLink={footerActionLink}
       />
     </div>
+    <script is:inline>
+      (function () {
+        if (!window.matchMedia("(pointer: fine)").matches) return;
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+        var root = document.documentElement;
+        var pending = false;
+        var x = window.innerWidth * 0.5;
+        var y = window.innerHeight * 0.5;
+
+        root.classList.add("has-cursor-spotlight");
+        root.style.setProperty("--spotlight-x", x + "px");
+        root.style.setProperty("--spotlight-y", y + "px");
+
+        var flush = function () {
+          root.style.setProperty("--spotlight-x", x + "px");
+          root.style.setProperty("--spotlight-y", y + "px");
+          pending = false;
+        };
+
+        window.addEventListener(
+          "mousemove",
+          function (event) {
+            x = event.clientX;
+            y = event.clientY;
+            if (!pending) {
+              pending = true;
+              requestAnimationFrame(flush);
+            }
+          },
+          { passive: true },
+        );
+      })();
+    </script>
+    <script is:inline>
+      (function () {
+        var EVENT = "portfolio:preloader-complete";
+        var KEY = "portfolio-preloader-complete";
+        var STAGGER = 0.12;
+        var START_DELAY = 0.1;
+
+        var collectTargets = function () {
+          var header = document.querySelector("header[data-reveal]");
+          var sections = Array.prototype.slice.call(
+            document.querySelectorAll("main > section, main > article"),
+          );
+          var footer = document.querySelector("footer[data-reveal]");
+          var targets = [];
+          if (header) targets.push(header);
+          targets = targets.concat(sections);
+          if (footer) targets.push(footer);
+          return targets;
+        };
+
+        var reveal = function () {
+          var targets = collectTargets();
+
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            targets.forEach(function (element) {
+              element.style.opacity = "1";
+              element.style.transform = "none";
+            });
+            document.documentElement.classList.add("is-revealing");
+            return;
+          }
+
+          targets.forEach(function (element, index) {
+            element.style.animationDelay = START_DELAY + index * STAGGER + "s";
+          });
+          document.documentElement.classList.add("is-revealing");
+        };
+
+        var started = false;
+        var startOnce = function () {
+          if (started) return;
+          started = true;
+          reveal();
+        };
+
+        try {
+          if (sessionStorage.getItem(KEY) === "true") {
+            startOnce();
+          } else {
+            window.addEventListener(EVENT, startOnce, { once: true });
+            setTimeout(startOnce, 6000);
+          }
+        } catch {
+          startOnce();
+        }
+      })();
+    </script>
   </body>
 </html>

@@ -2,6 +2,7 @@
   "name": "astro-portfolio",
   "private": true,
   "version": "1.0.0",
+  "packageManager": "pnpm@10.30.0",
   "main": "package.json",
   "license": "UNLICENSED",
   "scripts": {

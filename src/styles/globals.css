@@ -1,12 +1,10 @@
 /* Token sources: designs/figma/tailwind-theme.css, designs/figma/tokens.json, designs/css/shared.css */
 
 @import "tailwindcss";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/inter/700.css";
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
 
 @theme {
   /* Fonts */
@@ -168,8 +166,75 @@
     @apply bg-transparent p-0 text-[0.8125rem];
   }
 
+  .cursor-spotlight {
+    display: none;
+  }
+
+  html.has-cursor-spotlight .cursor-spotlight {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-color: var(--color-accent);
+    opacity: 0.075;
+    mask-image: radial-gradient(
+      640px circle at var(--spotlight-x, 50vw) var(--spotlight-y, 50vh),
+      black 0%,
+      transparent 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      640px circle at var(--spotlight-x, 50vw) var(--spotlight-y, 50vh),
+      black 0%,
+      transparent 100%
+    );
+  }
+
+  html.has-cursor-spotlight.dark .cursor-spotlight {
+    opacity: 0.12;
+  }
+
+  html.has-cursor-spotlight.is-preloading .cursor-spotlight {
+    opacity: 0;
+  }
+
   html.is-preloading body {
     overflow: hidden;
+  }
+
+  [data-reveal],
+  main > section,
+  main > article {
+    opacity: 0;
+    transform: translateY(3rem);
+  }
+
+  @keyframes page-reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(3rem);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  html.is-revealing [data-reveal],
+  html.is-revealing main > section,
+  html.is-revealing main > article {
+    animation: page-reveal-up 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal],
+    main > section,
+    main > article {
+      opacity: 1;
+      transform: none;
+      animation: none !important;
+    }
   }
 
   .page-preloader {
