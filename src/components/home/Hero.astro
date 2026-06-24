@@ -1,4 +1,5 @@
 ---
+import HeroProfileImage from "@/components/home/HeroProfileImage.astro";
 import Container from "@/components/layout/Container.astro";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge.astro";
 import ButtonLink from "@/components/ui/ButtonLink.astro";
@@ -10,40 +11,48 @@ type Props = {
   title: string;
   bio: string;
   availability: string;
+  initials: string;
+  photoUrl?: string;
   socialLinks: SocialLink[];
 };
 
-const { name, title, bio, availability, socialLinks } = Astro.props;
+const { name, title, bio, availability, initials, photoUrl, socialLinks } = Astro.props;
 ---
 
 <section class="py-[clamp(4rem,12vw,8rem)] pb-[clamp(3rem,8vw,5rem)]">
   <Container>
-    <div class="flex max-w-[720px] flex-col gap-5">
-      <AvailabilityBadge label={availability} />
+    <div class="grid items-center gap-10 min-[900px]:grid-cols-[minmax(0,720px)_auto] min-[900px]:gap-16">
+      <div class="flex flex-col gap-5">
+        <AvailabilityBadge label={availability} />
 
-      <h1
-        class="text-[clamp(2.25rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.03em] text-text-primary"
-      >
-        {name}
-      </h1>
+        <h1
+          class="text-[clamp(2.25rem,5vw,3.5rem)] font-bold leading-[1.1] tracking-[-0.03em] text-text-primary"
+        >
+          {name}
+        </h1>
 
-      <p
-        class="text-[clamp(1.25rem,2vw,1.5rem)] font-medium leading-[1.25] tracking-[-0.02em] text-text-muted"
-      >
-        {title}
-      </p>
+        <p
+          class="text-[clamp(1.25rem,2vw,1.5rem)] font-medium leading-[1.25] tracking-[-0.02em] text-text-muted"
+        >
+          {title}
+        </p>
 
-      <p class="max-w-[52ch] text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.65] text-text-muted">
-        {bio}
-      </p>
+        <p class="max-w-[52ch] text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.65] text-text-muted">
+          {bio}
+        </p>
 
-      <div class="mt-2 flex flex-wrap items-center gap-3">
-        <ButtonLink href="/projects" variant="primary">View Projects</ButtonLink>
-        <ButtonLink href="/blog" variant="secondary">Read Blog</ButtonLink>
+        <div class="mt-2 flex flex-wrap items-center gap-3">
+          <ButtonLink href="/projects" variant="primary">View Projects</ButtonLink>
+          <ButtonLink href="/blog" variant="secondary">Read Blog</ButtonLink>
+        </div>
+
+        <div class="mt-3">
+          <SocialLinks links={socialLinks} />
+        </div>
       </div>
 
-      <div class="mt-3">
-        <SocialLinks links={socialLinks} />
+      <div class="mx-auto min-[900px]:mx-0 min-[900px]:justify-self-end">
+        <HeroProfileImage photoUrl={photoUrl} initials={initials} name={name} />
       </div>
     </div>
   </Container>

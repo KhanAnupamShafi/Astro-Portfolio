@@ -2,6 +2,7 @@
 import BaseHead from "@/components/layout/BaseHead.astro";
 import Footer from "@/components/layout/Footer.astro";
 import Navbar from "@/components/layout/Navbar.astro";
+import PagePreloader from "@/components/layout/PagePreloader";
 import type { OgType } from "@/lib/seo";
 import type { SocialLink } from "@/types";
 import "@/styles/globals.css";
@@ -23,6 +24,7 @@ type Props = {
   imageAlt?: string;
   type?: OgType;
   siteName?: string;
+  brandLabel?: string;
   socialLinks?: SocialLink[];
   footerActionLink?: FooterActionLink;
   backLink?: BackLink;
@@ -35,6 +37,7 @@ const {
   imageAlt,
   type,
   siteName,
+  brandLabel = "Khan Anupam Shafi",
   socialLinks = [],
   footerActionLink,
   backLink,
@@ -52,8 +55,26 @@ const {
       type={type}
       siteName={siteName}
     />
+    <script is:inline>
+      try {
+        if (sessionStorage.getItem("portfolio-preloader-complete") !== "true") {
+          document.documentElement.classList.add("is-preloading");
+        }
+      } catch {
+        /* sessionStorage unavailable */
+      }
+
+      const navigationEntry = performance.getEntriesByType("navigation")[0];
+      if (navigationEntry && navigationEntry.type === "reload") {
+        if ("scrollRestoration" in history) {
+          history.scrollRestoration = "manual";
+        }
+        window.scrollTo(0, 0);
+      }
+    </script>
   </head>
   <body>
+    <PagePreloader client:only="react" brandLabel={brandLabel} />
     <div class="flex min-h-screen flex-col">
       <Navbar backLink={backLink} />
       <main class="flex-1">

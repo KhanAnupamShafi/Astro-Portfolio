@@ -2,7 +2,12 @@
 import BaseLayout from "@/components/layout/BaseLayout.astro";
 import FeaturedProjects from "@/components/home/FeaturedProjects.astro";
 import Hero from "@/components/home/Hero.astro";
-import { buildSocialLinks, getAboutOgImageUrl, mapFeaturedProject } from "@/lib/mappers";
+import {
+  buildSocialLinks,
+  getAboutHeroPhotoUrl,
+  getAboutOgImageUrl,
+  mapFeaturedProject,
+} from "@/lib/mappers";
 import { ABOUT_QUERY, FEATURED_PROJECTS_QUERY } from "@/lib/queries";
 import { sanityClient } from "@/lib/sanity";
 import type { SanityAboutDocument, SanityProjectListItem } from "@/types";
@@ -16,9 +21,10 @@ if (!about) {
   throw new Error("About document not found in Sanity. Create the About singleton in Studio.");
 }
 
-const { name, title, bio, availability } = about;
+const { name, title, bio, availability, initials } = about;
 const socialLinks = buildSocialLinks(about);
 const featuredProjects = featuredProjectDocs.map(mapFeaturedProject);
+const photoUrl = getAboutHeroPhotoUrl(about);
 const ogImageUrl = getAboutOgImageUrl(about);
 ---
 
@@ -35,6 +41,8 @@ const ogImageUrl = getAboutOgImageUrl(about);
     title={title}
     bio={bio}
     availability={availability ?? ""}
+    initials={initials}
+    photoUrl={photoUrl}
     socialLinks={socialLinks}
   />
   <FeaturedProjects projects={featuredProjects} />

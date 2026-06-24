@@ -141,5 +141,8 @@ export const mapCertificate = (certificate: SanityCertificateDocument): Certific
 export const getAboutPhotoUrl = (about: SanityAboutDocument): string | undefined =>
   about.photo ? urlFor(about.photo).width(480).height(480).format("webp").url() : undefined;
 
+export const getAboutHeroPhotoUrl = (about: SanityAboutDocument): string | undefined =>
+  about.photo ? urlFor(about.photo).width(640).height(640).format("webp").url() : undefined;
+
 export const getAboutOgImageUrl = (about: SanityAboutDocument): string | undefined =>
   buildOgImageUrl(about.photo);

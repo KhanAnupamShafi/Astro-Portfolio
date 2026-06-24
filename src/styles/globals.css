@@ -167,4 +167,179 @@
   .prose pre code {
     @apply bg-transparent p-0 text-[0.8125rem];
   }
+
+  html.is-preloading body {
+    overflow: hidden;
+  }
+
+  .page-preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background);
+  }
+
+  .page-preloader__brand {
+    position: absolute;
+    top: clamp(1.25rem, 4vw, 2rem);
+    left: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  .page-preloader__counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .page-preloader__track {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--color-border);
+  }
+
+  .page-preloader__bar {
+    height: 100%;
+    width: 100%;
+    transform-origin: left center;
+  }
+
+  /* Hero portrait — circular variant of designs/screens/home.html */
+  .hero-portrait {
+    display: block;
+    width: clamp(13rem, 38vw, 21rem);
+  }
+
+  .hero-portrait__stage {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    isolation: isolate;
+  }
+
+  .hero-portrait__grid {
+    position: absolute;
+    inset: 4%;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    background-image:
+      linear-gradient(var(--color-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-border) 1px, transparent 1px);
+    background-size: 1.25rem 1.25rem;
+    opacity: 0.35;
+    mask-image: radial-gradient(circle at center, black 62%, transparent 74%);
+  }
+
+  .hero-portrait__ring {
+    position: absolute;
+    border-radius: var(--radius-full);
+    pointer-events: none;
+    transform: translateZ(0);
+  }
+
+  .hero-portrait__ring--outer {
+    inset: 0;
+    padding: 3px;
+    background: conic-gradient(
+      from 0deg,
+      var(--color-accent),
+      var(--color-border) 33%,
+      var(--color-accent-light) 66%,
+      var(--color-accent) 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: hero-portrait-ring-spin 14s linear infinite;
+    will-change: transform;
+  }
+
+  .hero-portrait__ring--inner {
+    inset: 0.5rem;
+    box-shadow: inset 0 0 0 2px var(--color-border);
+  }
+
+  @keyframes hero-portrait-ring-spin {
+    to {
+      transform: translateZ(0) rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-portrait__ring--outer {
+      animation: none;
+      will-change: auto;
+    }
+  }
+
+  .hero-portrait__float {
+    position: absolute;
+    inset: 1rem;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-portrait__frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.04);
+  }
+
+  .hero-portrait__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-portrait__fallback {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: radial-gradient(
+      circle at 50% 35%,
+      var(--color-surface-secondary) 0%,
+      var(--color-surface) 68%
+    );
+    text-align: center;
+  }
+
+  .hero-portrait__initials {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+  }
+
+  .hero-portrait__fallback-label {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
 }

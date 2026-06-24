@@ -1,0 +1,41 @@
+---
+type Props = {
+  photoUrl?: string;
+  initials: string;
+  name: string;
+};
+
+const { photoUrl, initials, name } = Astro.props;
+---
+
+<aside data-motion="hero-portrait" class="hero-portrait" aria-label="Profile photo">
+  <div class="hero-portrait__stage">
+    <div class="hero-portrait__grid" aria-hidden="true"></div>
+    <div class="hero-portrait__ring hero-portrait__ring--outer" aria-hidden="true"></div>
+    <div class="hero-portrait__ring hero-portrait__ring--inner" aria-hidden="true"></div>
+
+    <div class="hero-portrait__float">
+      <figure class="hero-portrait__frame">
+        {
+          photoUrl ? (
+            <img
+              class="hero-portrait__photo"
+              src={photoUrl}
+              alt={`${name} — software engineer portrait`}
+              width={420}
+              height={420}
+              fetchpriority="high"
+              loading="eager"
+              decoding="async"
+            />
+          ) : (
+            <div class="hero-portrait__fallback" aria-hidden="true">
+              <span class="hero-portrait__initials">{initials}</span>
+              <span class="hero-portrait__fallback-label">Profile photo</span>
+            </div>
+          )
+        }
+      </figure>
+    </div>
+  </div>
+</aside>
