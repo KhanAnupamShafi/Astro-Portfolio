@@ -136,6 +136,7 @@ export const mapCertificate = (certificate: SanityCertificateDocument): Certific
   title: certificate.title,
   issuer: certificate.issuer,
   dateLabel: `Issued ${formatMonthYear(certificate.issuedAt)}`,
+  credentialUrl: certificate.credentialUrl,
 });
 
 export const getAboutPhotoUrl = (about: SanityAboutDocument): string | undefined =>

@@ -6,23 +6,51 @@ type Props = {
 };
 
 const { certificate } = Astro.props;
+
+const cardClass =
+  "flex gap-4 rounded-lg border border-border bg-surface p-5 transition-colors duration-150";
+const linkedCardClass = `${cardClass} hover:bg-surface-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`;
 ---
 
-<article
-  class="flex gap-4 rounded-lg border border-border bg-surface p-5 transition-colors duration-150"
->
-  <div
-    class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] text-text-primary"
-    aria-hidden="true"
-  >
-    {certificate.iconLabel}
-  </div>
+{
+  certificate.credentialUrl ? (
+    <a
+      href={certificate.credentialUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class={linkedCardClass}
+    >
+      <div
+        class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] text-text-primary"
+        aria-hidden="true"
+      >
+        {certificate.iconLabel}
+      </div>
 
-  <div class="flex min-w-0 flex-col gap-1">
-    <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
-      {certificate.title}
-    </h2>
-    <p class="text-sm text-text-muted">{certificate.issuer}</p>
-    <p class="mt-1 font-mono text-xs text-text-muted">{certificate.dateLabel}</p>
-  </div>
-</article>
+      <div class="flex min-w-0 flex-col gap-1">
+        <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
+          {certificate.title}
+        </h2>
+        <p class="text-sm text-text-muted">{certificate.issuer}</p>
+        <p class="mt-1 font-mono text-xs text-text-muted">{certificate.dateLabel}</p>
+      </div>
+    </a>
+  ) : (
+    <article class={cardClass}>
+      <div
+        class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] text-text-primary"
+        aria-hidden="true"
+      >
+        {certificate.iconLabel}
+      </div>
+
+      <div class="flex min-w-0 flex-col gap-1">
+        <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
+          {certificate.title}
+        </h2>
+        <p class="text-sm text-text-muted">{certificate.issuer}</p>
+        <p class="mt-1 font-mono text-xs text-text-muted">{certificate.dateLabel}</p>
+      </div>
+    </article>
+  )
+}

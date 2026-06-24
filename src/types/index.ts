@@ -168,6 +168,7 @@ export type Certificate = {
   title: string;
   issuer: string;
   dateLabel: string;
+  credentialUrl?: string;
 };
 
 export type BlogPost = {
