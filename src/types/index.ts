@@ -29,3 +29,28 @@ export type HomePageData = {
   socialLinks: SocialLink[];
   featuredProjects: FeaturedProject[];
 };
+
+export type SkillCategory = {
+  title: string;
+  skills: string;
+};
+
+export type WorkExperience = {
+  dateRange: string;
+  role: string;
+  company: string;
+  summary: string;
+  highlights?: string[];
+};
+
+export type AboutPageData = {
+  name: string;
+  title: string;
+  bio: string;
+  initials: string;
+  location: string;
+  availability: string;
+  socialLinks: SocialLink[];
+  skillCategories: SkillCategory[];
+  experience: WorkExperience[];
+};

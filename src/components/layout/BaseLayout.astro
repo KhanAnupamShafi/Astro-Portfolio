@@ -5,13 +5,19 @@ import Navbar from "@/components/layout/Navbar.astro";
 import type { SocialLink } from "@/types";
 import "@/styles/globals.css";
 
+type FooterActionLink = {
+  href: string;
+  label: string;
+};
+
 type Props = {
   title: string;
   description?: string;
   socialLinks?: SocialLink[];
+  footerActionLink?: FooterActionLink;
 };
 
-const { title, description, socialLinks = [] } = Astro.props;
+const { title, description, socialLinks = [], footerActionLink } = Astro.props;
 ---
 
 <!doctype html>
@@ -25,7 +31,11 @@ const { title, description, socialLinks = [] } = Astro.props;
       <main class="flex-1">
         <slot />
       </main>
-      <Footer name="Khan Anupam Shafi" socialLinks={socialLinks} />
+      <Footer
+        name="Khan Anupam Shafi"
+        socialLinks={footerActionLink ? [] : socialLinks}
+        actionLink={footerActionLink}
+      />
     </div>
   </body>
 </html>

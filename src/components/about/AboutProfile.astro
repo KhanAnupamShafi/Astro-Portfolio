@@ -1,0 +1,34 @@
+---
+import AvailabilityBadge from "@/components/ui/AvailabilityBadge.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+import type { SocialLink } from "@/types";
+
+type Props = {
+  initials: string;
+  location: string;
+  availability: string;
+  socialLinks: SocialLink[];
+};
+
+const { initials, location, availability, socialLinks } = Astro.props;
+---
+
+<aside class="flex flex-col gap-4">
+  <div
+    class="grid size-[120px] place-items-center rounded-lg border border-border bg-gradient-to-br from-surface-secondary to-surface text-2xl font-semibold text-text-muted"
+    aria-hidden="true"
+  >
+    {initials}
+  </div>
+
+  <div>
+    <p class="font-mono text-[0.6875rem] uppercase tracking-[0.12em] text-text-muted">
+      Location
+    </p>
+    <p class="text-sm font-medium text-text-primary">{location}</p>
+  </div>
+
+  <AvailabilityBadge label={availability} />
+
+  <SocialLinks links={socialLinks} />
+</aside>

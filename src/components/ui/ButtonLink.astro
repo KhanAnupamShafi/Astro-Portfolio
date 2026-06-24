@@ -1,18 +1,20 @@
 ---
 type Props = {
   href: string;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "ghost";
 };
 
 const { href, variant = "primary" } = Astro.props;
 
 const baseClasses =
-  "inline-flex items-center justify-center gap-2 rounded-lg px-[1.125rem] py-2.5 text-sm font-medium transition-colors duration-150";
+  "inline-flex items-center justify-center gap-2 text-sm font-medium transition-colors duration-150";
 
 const variantClasses = {
-  primary: "border border-transparent bg-text-primary text-background hover:opacity-90",
+  primary:
+    "rounded-lg border border-transparent bg-text-primary px-[1.125rem] py-2.5 text-background hover:opacity-90",
   secondary:
-    "border border-border bg-transparent text-text-primary hover:bg-surface-secondary",
+    "rounded-lg border border-border bg-transparent px-[1.125rem] py-2.5 text-text-primary hover:bg-surface-secondary",
+  ghost: "px-3 py-2 text-text-muted hover:text-accent",
 };
 ---
 

@@ -1,0 +1,27 @@
+---
+type Props = {
+  name: string;
+  title: string;
+  bio: string;
+};
+
+const { name, title, bio } = Astro.props;
+---
+
+<div>
+  <h1
+    class="mb-2 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
+  >
+    {name}
+  </h1>
+
+  <p
+    class="mb-6 text-[clamp(1.25rem,2vw,1.5rem)] font-medium leading-[1.25] tracking-[-0.02em] text-text-muted"
+  >
+    {title}
+  </p>
+
+  <p class="mb-8 max-w-[52ch] text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.65] text-text-muted">
+    {bio}
+  </p>
+</div>

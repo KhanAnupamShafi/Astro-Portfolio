@@ -1,14 +1,21 @@
 ---
 import Container from "@/components/layout/Container.astro";
+import ButtonLink from "@/components/ui/ButtonLink.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
 import type { SocialLink } from "@/types";
 
-type Props = {
-  name: string;
-  socialLinks: SocialLink[];
+type FooterActionLink = {
+  href: string;
+  label: string;
 };
 
-const { name, socialLinks } = Astro.props;
+type Props = {
+  name: string;
+  socialLinks?: SocialLink[];
+  actionLink?: FooterActionLink;
+};
+
+const { name, socialLinks = [], actionLink } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -17,6 +24,15 @@ const year = new Date().getFullYear();
     <p class="text-sm text-text-muted">
       © {year} / <span class="text-text-primary">{name}</span>
     </p>
-    <SocialLinks links={socialLinks} />
+
+    {
+      actionLink ? (
+        <ButtonLink href={actionLink.href} variant="ghost">
+          {actionLink.label}
+        </ButtonLink>
+      ) : (
+        socialLinks.length > 0 && <SocialLinks links={socialLinks} />
+      )
+    }
   </Container>
 </footer>

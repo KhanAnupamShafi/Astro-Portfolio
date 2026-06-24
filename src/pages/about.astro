@@ -1,0 +1,46 @@
+---
+import AboutIntro from "@/components/about/AboutIntro.astro";
+import AboutProfile from "@/components/about/AboutProfile.astro";
+import ExperienceTimeline from "@/components/about/ExperienceTimeline.astro";
+import SkillsGrid from "@/components/about/SkillsGrid.astro";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import Container from "@/components/layout/Container.astro";
+import { aboutPageMock } from "@/lib/mock/about";
+
+const {
+  name,
+  title,
+  bio,
+  initials,
+  location,
+  availability,
+  socialLinks,
+  skillCategories,
+  experience,
+} = aboutPageMock;
+---
+
+<BaseLayout
+  title={`About — ${name}`}
+  description={bio}
+  footerActionLink={{ href: "/certificates", label: "Certificates →" }}
+>
+  <section class="py-[clamp(3rem,8vw,6rem)]">
+    <Container>
+      <div class="grid gap-12 min-[900px]:grid-cols-[280px_1fr] min-[900px]:items-start">
+        <AboutProfile
+          initials={initials}
+          location={location}
+          availability={availability}
+          socialLinks={socialLinks}
+        />
+
+        <div>
+          <AboutIntro name={name} title={title} bio={bio} />
+          <SkillsGrid categories={skillCategories} />
+          <ExperienceTimeline experience={experience} />
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
