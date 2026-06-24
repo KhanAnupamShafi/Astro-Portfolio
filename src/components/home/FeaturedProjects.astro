@@ -1,0 +1,39 @@
+---
+import Container from "@/components/layout/Container.astro";
+import FeaturedProject from "@/components/home/FeaturedProject.astro";
+import ArrowRight from "lucide-astro/ArrowRight";
+import type { FeaturedProject as FeaturedProjectType } from "@/types";
+
+type Props = {
+  projects: FeaturedProjectType[];
+};
+
+const { projects } = Astro.props;
+---
+
+<section class="py-[clamp(2rem,5vw,4rem)] pb-[clamp(3rem,8vw,6rem)]">
+  <Container>
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+      <h2
+        class="text-[clamp(1.25rem,2vw,1.5rem)] font-semibold leading-[1.25] tracking-[-0.02em] text-text-primary"
+      >
+        Featured work
+      </h2>
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-1 px-3 py-2 text-sm font-medium text-text-muted transition-colors duration-150 hover:text-accent"
+      >
+        View all
+        <ArrowRight class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+
+    <div>
+      {
+        projects.map((project, index) => (
+          <FeaturedProject project={project} reversed={index % 2 === 1} />
+        ))
+      }
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,22 @@
+---
+import Container from "@/components/layout/Container.astro";
+import SocialLinks from "@/components/ui/SocialLinks.astro";
+import type { SocialLink } from "@/types";
+
+type Props = {
+  name: string;
+  socialLinks: SocialLink[];
+};
+
+const { name, socialLinks } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-auto border-t border-border py-8">
+  <Container class="flex flex-wrap items-center justify-between gap-4">
+    <p class="text-sm text-text-muted">
+      © {year} / <span class="text-text-primary">{name}</span>
+    </p>
+    <SocialLinks links={socialLinks} />
+  </Container>
+</footer>

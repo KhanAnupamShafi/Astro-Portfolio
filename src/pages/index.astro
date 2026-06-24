@@ -1,19 +1,23 @@
 ---
-import "@/styles/globals.css";
+import BaseLayout from "@/components/layout/BaseLayout.astro";
+import FeaturedProjects from "@/components/home/FeaturedProjects.astro";
+import Hero from "@/components/home/Hero.astro";
+import { homePageMock } from "@/lib/mock/home";
+
+const { name, title, bio, availability, socialLinks, featuredProjects } = homePageMock;
 ---
 
-<html lang="en" class="font-sans">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Portfolio</title>
-  </head>
-  <body class="bg-background text-text-primary">
-    <main class="mx-auto flex min-h-screen max-w-5xl items-center justify-center px-6">
-      <p class="text-text-secondary">Portfolio setup complete.</p>
-    </main>
-  </body>
-</html>
+<BaseLayout
+  title={`${name} — ${title}`}
+  description={bio}
+  socialLinks={socialLinks}
+>
+  <Hero
+    name={name}
+    title={title}
+    bio={bio}
+    availability={availability}
+    socialLinks={socialLinks}
+  />
+  <FeaturedProjects projects={featuredProjects} />
+</BaseLayout>

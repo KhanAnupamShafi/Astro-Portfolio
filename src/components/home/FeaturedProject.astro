@@ -1,0 +1,65 @@
+---
+import ProjectMockup from "@/components/home/ProjectMockup.astro";
+import Tag from "@/components/ui/Tag.astro";
+import ExternalLink from "lucide-astro/ExternalLink";
+import ArrowRight from "lucide-astro/ArrowRight";
+import type { FeaturedProject } from "@/types";
+
+type Props = {
+  project: FeaturedProject;
+  reversed?: boolean;
+};
+
+const { project, reversed = false } = Astro.props;
+---
+
+<article
+  class="grid gap-6 border-b border-border py-10 min-[900px]:grid-cols-2 min-[900px]:items-center min-[900px]:gap-12"
+>
+  <div
+    class:list={[
+      "order-2 flex flex-col gap-4",
+      reversed ? "min-[900px]:order-2" : "min-[900px]:order-1",
+    ]}
+  >
+    <h3
+      class="text-[clamp(1.25rem,2vw,1.5rem)] font-semibold leading-[1.25] tracking-[-0.02em] text-text-primary"
+    >
+      {project.title}
+    </h3>
+    <p class="text-sm leading-[1.55] text-text-muted">{project.description}</p>
+    <div class="flex flex-wrap gap-1.5">
+      {project.techStack.map((tech) => (
+        <Tag label={tech} />
+      ))}
+    </div>
+    <div class="mt-2 flex flex-wrap gap-5">
+      {
+        project.links.map((link) => (
+          <a
+            href={link.href}
+            target={link.icon === "external" ? "_blank" : undefined}
+            rel={link.icon === "external" ? "noopener noreferrer" : undefined}
+            class="inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors duration-150 hover:underline"
+          >
+            {link.label}
+            {link.icon === "external" ? (
+              <ExternalLink class="size-3.5" aria-hidden="true" />
+            ) : (
+              <ArrowRight class="size-3.5" aria-hidden="true" />
+            )}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    class:list={[
+      "order-1",
+      reversed ? "min-[900px]:order-1" : "min-[900px]:order-2",
+    ]}
+  >
+    <ProjectMockup browserUrl={project.browserUrl} imageSeed={project.imageSeed} />
+  </div>
+</article>

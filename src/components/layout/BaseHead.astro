@@ -1,0 +1,46 @@
+---
+type Props = {
+  title: string;
+  description?: string;
+};
+
+const { title, description = "Personal portfolio of Khan Anupam Shafi — Senior Software Engineer." } =
+  Astro.props;
+
+const canonicalUrl = Astro.url.href;
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" />
+
+<script is:inline>
+  (() => {
+    const storageKey = "portfolio-theme";
+
+    const applyTheme = (isDark) => {
+      document.documentElement.classList.toggle("dark", isDark);
+    };
+
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved === "dark") {
+        applyTheme(true);
+        return;
+      }
+      if (saved === "light") {
+        applyTheme(false);
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+
+    applyTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+  })();
+</script>

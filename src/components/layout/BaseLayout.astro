@@ -1,0 +1,31 @@
+---
+import BaseHead from "@/components/layout/BaseHead.astro";
+import Footer from "@/components/layout/Footer.astro";
+import Navbar from "@/components/layout/Navbar.astro";
+import type { SocialLink } from "@/types";
+import "@/styles/globals.css";
+
+type Props = {
+  title: string;
+  description?: string;
+  socialLinks?: SocialLink[];
+};
+
+const { title, description, socialLinks = [] } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="font-sans">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <div class="flex min-h-screen flex-col">
+      <Navbar timezone="Asia/Dhaka" />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer name="Khan Anupam Shafi" socialLinks={socialLinks} />
+    </div>
+  </body>
+</html>

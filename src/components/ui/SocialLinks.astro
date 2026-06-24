@@ -1,0 +1,39 @@
+---
+import Github from "lucide-astro/Github";
+import Linkedin from "lucide-astro/Linkedin";
+import Mail from "lucide-astro/Mail";
+import type { SocialLink } from "@/types";
+
+type Props = {
+  links: SocialLink[];
+};
+
+const { links } = Astro.props;
+
+const iconMap = {
+  github: Github,
+  linkedin: Linkedin,
+  mail: Mail,
+} as const;
+---
+
+<div class="flex flex-wrap gap-2">
+  {
+    links.map((link) => {
+      const Icon = iconMap[link.icon];
+      const isExternal = link.href.startsWith("http");
+
+      return (
+        <a
+          href={link.href}
+          aria-label={link.label}
+          target={isExternal ? "_blank" : undefined}
+          rel={isExternal ? "noopener noreferrer" : undefined}
+          class="flex size-10 items-center justify-center rounded-lg border border-border text-text-muted transition-colors duration-150 hover:border-border hover:bg-surface-secondary hover:text-text-primary"
+        >
+          <Icon class="size-[18px]" aria-hidden="true" />
+        </a>
+      );
+    })
+  }
+</div>
