@@ -138,12 +138,7 @@ export const mapBlogPost = (post: SanityPostDocument): BlogPost => ({
   tags: post.tags ?? [],
   bodyHtml: portableTextToHtml(post.body),
   coverImageUrl: post.coverImage
-    ? urlFor(post.coverImage)
-        .width(1200)
-        .height(675)
-        .fit("crop")
-        .format("webp")
-        .url()
+    ? urlFor(post.coverImage).width(1200).auto("format").format("webp").url()
     : undefined,
   ogImageUrl: buildOgImageUrl(post.coverImage),
 });
