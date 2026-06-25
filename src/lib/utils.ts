@@ -57,6 +57,37 @@ export const portableTextToHtml = (
   return toHTML(blocks, {
     components: {
       types: {
+        quote: ({ value }) => {
+          const text = typeof value?.text === "string" ? escapeHtml(value.text) : "";
+          const attribution =
+            typeof value?.attribution === "string" ? escapeHtml(value.attribution) : "";
+
+          if (!text) {
+            return "";
+          }
+
+          const attributionMarkup = attribution
+            ? `<footer class="prose-quote-attribution">— ${attribution}</footer>`
+            : "";
+
+          return `<blockquote class="prose-quote"><p>${text}</p>${attributionMarkup}</blockquote>`;
+        },
+        codeBlock: ({ value }) => {
+          const code = typeof value?.code === "string" ? escapeHtml(value.code) : "";
+          const language =
+            typeof value?.language === "string" && value.language !== "text"
+              ? escapeHtml(value.language)
+              : "";
+
+          if (!code) {
+            return "";
+          }
+
+          const languageAttr = language ? ` data-language="${language}"` : "";
+
+          return `<pre class="prose-code-block"${languageAttr}><code>${code}</code></pre>`;
+        },
+        divider: () => `<hr class="prose-divider" />`,
         image: ({ value }) => {
           if (!value?.asset) {
             return "";

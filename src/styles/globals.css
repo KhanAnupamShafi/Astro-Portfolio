@@ -170,6 +170,30 @@
     @apply mb-4 border-l-2 border-border pl-4 text-text-secondary;
   }
 
+  .prose-quote {
+    @apply mb-4 border-l-2 border-accent/60 pl-4 text-text-primary;
+  }
+
+  .prose-quote p {
+    @apply mb-0 italic;
+  }
+
+  .prose-quote-attribution {
+    @apply mt-2 text-sm not-italic text-text-muted;
+  }
+
+  .prose-divider {
+    @apply my-8 border-0 border-t border-border;
+  }
+
+  .prose-code-block {
+    @apply mb-4 overflow-x-auto rounded-lg border border-border bg-surface-secondary p-4;
+  }
+
+  .prose-code-block code {
+    @apply bg-transparent p-0 font-mono text-[0.8125rem] text-text-primary;
+  }
+
   .prose a {
     @apply text-accent underline-offset-2 transition-colors duration-150 hover:underline;
   }

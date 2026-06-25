@@ -1,5 +1,10 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {DocumentTextIcon} from '@sanity/icons'
+import {
+  codeBlockMember,
+  dividerBlockMember,
+  quoteBlockMember,
+} from './blocks/embedBlocks'
 import {richTextBlockMember} from './blocks/richTextBlock'
 
 export const post = defineType({
@@ -66,9 +71,12 @@ export const post = defineType({
       title: 'Body',
       type: 'array',
       description:
-        'Use heading styles for titles — not bold alone. H2 for main sections, H3 for subsections, H4 for list items like "1. Standard RAG", H5 for short labels like "Step 1".',
+        'Use heading styles for titles — not bold alone. Press + to insert quotes, code blocks, dividers, and images. Use the Quote style in the toolbar for inline blockquotes.',
       of: [
         richTextBlockMember,
+        quoteBlockMember,
+        codeBlockMember,
+        dividerBlockMember,
         defineArrayMember({
           type: 'image',
           options: {hotspot: true},
