@@ -129,6 +129,26 @@
     @apply mb-2 mt-6 text-base font-semibold text-text-primary;
   }
 
+  .prose h4 {
+    @apply mb-2 mt-5 text-[0.9375rem] font-semibold text-text-primary;
+  }
+
+  .prose h5 {
+    @apply mb-2 mt-4 text-[0.9375rem] font-semibold text-text-primary;
+  }
+
+  .prose h6 {
+    @apply mb-2 mt-4 text-sm font-semibold text-text-primary;
+  }
+
+  .prose strong {
+    @apply font-semibold text-text-primary;
+  }
+
+  .prose p:has(> strong:only-child) {
+    @apply mb-1 mt-5;
+  }
+
   .prose ul,
   .prose ol {
     @apply mb-4 list-outside pl-5;

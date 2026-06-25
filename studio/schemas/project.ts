@@ -1,5 +1,6 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {RocketIcon} from '@sanity/icons'
+import {richTextBlockMember} from './blocks/richTextBlock'
 
 export const project = defineType({
   name: 'project',
@@ -32,8 +33,9 @@ export const project = defineType({
       name: 'longDescription',
       title: 'Case study body',
       type: 'array',
-      of: [defineArrayMember({type: 'block'})],
-      description: 'Portable Text — shown on the project detail page',
+      of: [richTextBlockMember],
+      description:
+        'Portable Text — shown on the project detail page. Use heading styles for section titles, not bold alone.',
     }),
     defineField({
       name: 'techStack',

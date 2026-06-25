@@ -1,5 +1,6 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 import {DocumentTextIcon} from '@sanity/icons'
+import {richTextBlockMember} from './blocks/richTextBlock'
 
 export const post = defineType({
   name: 'post',
@@ -64,8 +65,10 @@ export const post = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
+      description:
+        'Use heading styles for titles — not bold alone. H2 for main sections, H3 for subsections, H4 for list items like "1. Standard RAG", H5 for short labels like "Step 1".',
       of: [
-        defineArrayMember({type: 'block'}),
+        richTextBlockMember,
         defineArrayMember({
           type: 'image',
           options: {hotspot: true},
