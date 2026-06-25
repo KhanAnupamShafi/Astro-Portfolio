@@ -34,11 +34,17 @@ export const post = defineType({
       validation: (rule) => rule.required().max(40),
     }),
     defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'string',
+      description: 'Shown on the post page. Leave empty to use the site owner name.',
+    }),
+    defineField({
       name: 'coverImage',
       title: 'Cover image',
       type: 'image',
       options: {hotspot: true},
-      description: 'Optional — used for social sharing previews (Open Graph)',
+      description: 'Shown at the top of the post and used for social sharing previews',
     }),
     defineField({
       name: 'excerpt',
@@ -58,7 +64,25 @@ export const post = defineType({
       name: 'body',
       title: 'Body',
       type: 'array',
-      of: [defineArrayMember({type: 'block'})],
+      of: [
+        defineArrayMember({type: 'block'}),
+        defineArrayMember({
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+            }),
+          ],
+        }),
+      ],
       validation: (rule) => rule.required(),
     }),
   ],

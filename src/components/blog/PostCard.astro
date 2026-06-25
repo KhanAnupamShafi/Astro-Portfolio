@@ -19,11 +19,30 @@ const formattedDate = formatDate(post.publishedAt);
     href={postHref}
     tabindex="-1"
     aria-hidden="true"
-    class="flex h-[140px] w-full shrink-0 items-center justify-center rounded-lg border border-border bg-surface-secondary px-4 text-center transition-colors duration-150 hover:border-[color-mix(in_oklch,var(--color-border),var(--color-text-primary)_25%)] min-[768px]:h-[128px] min-[768px]:w-[200px]"
+    class:list={[
+      "relative h-[140px] w-full shrink-0 overflow-hidden rounded-lg border border-border bg-surface-secondary transition-colors duration-150 hover:border-[color-mix(in_oklch,var(--color-border),var(--color-text-primary)_25%)] min-[768px]:h-[128px] min-[768px]:w-[200px]",
+      post.coverImageUrl
+        ? "block"
+        : "flex items-center justify-center px-4 text-center",
+    ]}
   >
-    <span class="text-sm font-semibold tracking-[-0.02em] text-text-primary min-[768px]:text-base">
-      {post.thumbLabel}
-    </span>
+    {
+      post.coverImageUrl ? (
+        <img
+          src={post.coverImageUrl}
+          alt=""
+          width={400}
+          height={256}
+          class="absolute inset-0 size-full object-cover object-center"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <span class="text-sm font-semibold tracking-[-0.02em] text-text-primary min-[768px]:text-base">
+          {post.thumbLabel}
+        </span>
+      )
+    }
   </a>
 
   <div class="min-w-0 flex-1">

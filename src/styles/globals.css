@@ -166,6 +166,18 @@
     @apply bg-transparent p-0 text-[0.8125rem];
   }
 
+  .prose-figure {
+    @apply my-8;
+  }
+
+  .prose-image {
+    @apply w-full rounded-lg border border-border;
+  }
+
+  .prose-caption {
+    @apply mt-2 text-center text-xs text-text-muted;
+  }
+
   .cursor-spotlight {
     display: none;
   }

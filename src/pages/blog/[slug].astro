@@ -29,6 +29,7 @@ if (!postDoc) {
 const about = await sanityClient.fetch<SanityAboutDocument | null>(ABOUT_QUERY);
 const post = mapBlogPost(postDoc);
 const ownerName = about?.name ?? "Portfolio";
+const authorName = post.author?.trim() || ownerName;
 const ogImageUrl = post.ogImageUrl ?? (about ? getAboutOgImageUrl(about) : undefined);
 const formattedDate = formatDate(post.publishedAt);
 ---
@@ -46,9 +47,11 @@ const formattedDate = formatDate(post.publishedAt);
     <Container>
       <div class="mx-auto w-full max-w-[680px]">
         <header class="mb-10">
-          <time datetime={post.publishedAt} class="mb-3 block font-mono text-xs text-text-muted">
-            {formattedDate}
-          </time>
+          <div class="mb-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-text-muted">
+            <time datetime={post.publishedAt}>{formattedDate}</time>
+            <span aria-hidden="true">·</span>
+            <span>{authorName}</span>
+          </div>
           <h1
             class="mb-4 text-[clamp(1.75rem,3.5vw,2.5rem)] font-semibold leading-[1.15] tracking-[-0.025em] text-text-primary"
           >
@@ -60,6 +63,20 @@ const formattedDate = formatDate(post.publishedAt);
             ))}
           </div>
         </header>
+
+        {
+          post.coverImageUrl ? (
+            <img
+              src={post.coverImageUrl}
+              alt=""
+              width={1200}
+              height={675}
+              class="mb-10 w-full rounded-lg border border-border object-cover"
+              loading="eager"
+              decoding="async"
+            />
+          ) : null
+        }
 
         <div class="prose" set:html={post.bodyHtml} />
       </div>

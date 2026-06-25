@@ -88,8 +88,10 @@ export const ALL_POSTS_QUERY = `
     "slug": slug.current,
     publishedAt,
     thumbLabel,
+    author,
     excerpt,
-    tags
+    tags,
+    coverImage
   }
 `;
 
@@ -106,6 +108,7 @@ export const POST_BY_SLUG_QUERY = `
     "slug": slug.current,
     publishedAt,
     thumbLabel,
+    author,
     excerpt,
     tags,
     coverImage,

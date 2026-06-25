@@ -1,6 +1,10 @@
 import { urlFor } from "@/lib/sanity";
 import { buildOgImageUrl } from "@/lib/seo";
-import { formatDateRange, formatMonthYear, portableTextToHtml } from "@/lib/utils";
+import {
+  formatDateRange,
+  formatMonthYear,
+  portableTextToHtml,
+} from "@/lib/utils";
 import type {
   BlogPost,
   Certificate,
@@ -26,7 +30,11 @@ export const buildSocialLinks = (about: SanityAboutDocument): SocialLink[] => {
   }
 
   if (about.linkedinUrl) {
-    links.push({ label: "LinkedIn", href: about.linkedinUrl, icon: "linkedin" });
+    links.push({
+      label: "LinkedIn",
+      href: about.linkedinUrl,
+      icon: "linkedin",
+    });
   }
 
   if (about.email) {
@@ -40,16 +48,24 @@ export const mapSkillCategories = (
   categories: SkillCategory[] | null | undefined,
 ): SkillCategory[] => categories ?? [];
 
-export const mapExperience = (items: SanityExperienceDocument[]): WorkExperience[] =>
+export const mapExperience = (
+  items: SanityExperienceDocument[],
+): WorkExperience[] =>
   items.map((item) => ({
     role: item.role,
     company: item.company,
     summary: item.description ?? "",
     highlights: item.highlights ?? undefined,
-    dateRange: formatDateRange(item.startDate, item.endDate ?? null, item.current ?? false),
+    dateRange: formatDateRange(
+      item.startDate,
+      item.endDate ?? null,
+      item.current ?? false,
+    ),
   }));
 
-export const mapFeaturedProject = (project: SanityProjectListItem): FeaturedProject => {
+export const mapFeaturedProject = (
+  project: SanityProjectListItem,
+): FeaturedProject => {
   const links: ProjectLink[] = [
     { label: "Case study", href: `/projects/${project.slug}` },
   ];
@@ -76,7 +92,9 @@ export const mapFeaturedProject = (project: SanityProjectListItem): FeaturedProj
   };
 };
 
-export const mapProjectListItem = (project: SanityProjectListItem): Project => ({
+export const mapProjectListItem = (
+  project: SanityProjectListItem,
+): Project => ({
   slug: project.slug,
   title: project.title,
   shortDescription: project.description,
@@ -115,9 +133,18 @@ export const mapBlogPost = (post: SanityPostDocument): BlogPost => ({
   thumbLabel: post.thumbLabel,
   publishedAt: post.publishedAt,
   title: post.title,
+  author: post.author,
   excerpt: post.excerpt,
   tags: post.tags ?? [],
   bodyHtml: portableTextToHtml(post.body),
+  coverImageUrl: post.coverImage
+    ? urlFor(post.coverImage)
+        .width(1200)
+        .height(675)
+        .fit("crop")
+        .format("webp")
+        .url()
+    : undefined,
   ogImageUrl: buildOgImageUrl(post.coverImage),
 });
 
@@ -126,24 +153,52 @@ export const mapBlogPostListItem = (post: SanityPostDocument): BlogPost => ({
   thumbLabel: post.thumbLabel,
   publishedAt: post.publishedAt,
   title: post.title,
+  author: post.author,
   excerpt: post.excerpt,
   tags: post.tags ?? [],
   bodyHtml: "",
+  coverImageUrl: post.coverImage
+    ? urlFor(post.coverImage)
+        .width(400)
+        .height(256)
+        .fit("crop")
+        .format("webp")
+        .url()
+    : undefined,
 });
 
-export const mapCertificate = (certificate: SanityCertificateDocument): Certificate => ({
+export const mapCertificate = (
+  certificate: SanityCertificateDocument,
+): Certificate => ({
   iconLabel: certificate.iconLabel,
   title: certificate.title,
   issuer: certificate.issuer,
   dateLabel: `Issued ${formatMonthYear(certificate.issuedAt)}`,
   credentialUrl: certificate.credentialUrl,
+  imageUrl: certificate.image
+    ? urlFor(certificate.image)
+        .width(88)
+        .height(88)
+        .fit("crop")
+        .format("webp")
+        .url()
+    : undefined,
 });
 
-export const getAboutPhotoUrl = (about: SanityAboutDocument): string | undefined =>
-  about.photo ? urlFor(about.photo).width(480).height(480).format("webp").url() : undefined;
+export const getAboutPhotoUrl = (
+  about: SanityAboutDocument,
+): string | undefined =>
+  about.photo
+    ? urlFor(about.photo).width(480).height(480).format("webp").url()
+    : undefined;
 
-export const getAboutHeroPhotoUrl = (about: SanityAboutDocument): string | undefined =>
-  about.photo ? urlFor(about.photo).width(420).height(420).format("webp").url() : undefined;
+export const getAboutHeroPhotoUrl = (
+  about: SanityAboutDocument,
+): string | undefined =>
+  about.photo
+    ? urlFor(about.photo).width(420).height(420).format("webp").url()
+    : undefined;
 
-export const getAboutOgImageUrl = (about: SanityAboutDocument): string | undefined =>
-  buildOgImageUrl(about.photo);
+export const getAboutOgImageUrl = (
+  about: SanityAboutDocument,
+): string | undefined => buildOgImageUrl(about.photo);

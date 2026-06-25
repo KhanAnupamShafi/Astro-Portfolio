@@ -53,6 +53,7 @@ export type SanityPostDocument = {
   slug: string;
   publishedAt: string;
   thumbLabel: string;
+  author?: string;
   excerpt: string;
   tags?: string[];
   coverImage?: SanityImage;
@@ -169,6 +170,7 @@ export type Certificate = {
   issuer: string;
   dateLabel: string;
   credentialUrl?: string;
+  imageUrl?: string;
 };
 
 export type BlogPost = {
@@ -176,8 +178,10 @@ export type BlogPost = {
   thumbLabel: string;
   publishedAt: string;
   title: string;
+  author?: string;
   excerpt: string;
   tags: string[];
   bodyHtml: string;
+  coverImageUrl?: string;
   ogImageUrl?: string;
 };

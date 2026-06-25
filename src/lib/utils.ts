@@ -1,5 +1,14 @@
 import { toHTML } from "@portabletext/to-html";
 import type { PortableTextBlock } from "@portabletext/types";
+import { urlFor } from "@/lib/sanity";
+import type { SanityImage } from "@/types";
+
+const escapeHtml = (text: string): string =>
+  text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
 
 export const formatDate = (isoDate: string): string => {
   const [year, month, day] = isoDate.split("-").map(Number);
@@ -47,6 +56,25 @@ export const portableTextToHtml = (
 
   return toHTML(blocks, {
     components: {
+      types: {
+        image: ({ value }) => {
+          if (!value?.asset) {
+            return "";
+          }
+
+          const imageUrl = urlFor(value as SanityImage).width(1200).auto("format").url();
+          const alt = typeof value.alt === "string" ? escapeHtml(value.alt) : "";
+          const caption =
+            typeof value.caption === "string" ? escapeHtml(value.caption) : "";
+          const imageMarkup = `<img src="${imageUrl}" alt="${alt}" loading="lazy" decoding="async" class="prose-image" />`;
+
+          if (caption) {
+            return `<figure class="prose-figure">${imageMarkup}<figcaption class="prose-caption">${caption}</figcaption></figure>`;
+          }
+
+          return `<figure class="prose-figure">${imageMarkup}</figure>`;
+        },
+      },
       marks: {
         link: ({ children, value }) => {
           const href = typeof value?.href === "string" ? value.href : "#";

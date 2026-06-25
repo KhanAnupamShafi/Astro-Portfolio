@@ -1,0 +1,33 @@
+---
+import type { Certificate } from "@/types";
+
+type Props = {
+  certificate: Certificate;
+};
+
+const { certificate } = Astro.props;
+
+const badgeClass =
+  "size-11 shrink-0 rounded-md border border-border bg-surface-secondary";
+---
+
+{
+  certificate.imageUrl ? (
+    <img
+      src={certificate.imageUrl}
+      alt=""
+      width={44}
+      height={44}
+      class={`${badgeClass} object-cover`}
+      loading="lazy"
+      decoding="async"
+    />
+  ) : (
+    <div
+      class={`${badgeClass} flex items-center justify-center font-mono text-[0.6875rem] text-text-primary`}
+      aria-hidden="true"
+    >
+      {certificate.iconLabel}
+    </div>
+  )
+}

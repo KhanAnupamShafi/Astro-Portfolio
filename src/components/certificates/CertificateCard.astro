@@ -1,4 +1,5 @@
 ---
+import CertificateCardBadge from "@/components/certificates/CertificateCardBadge.astro";
 import type { Certificate } from "@/types";
 
 type Props = {
@@ -20,12 +21,7 @@ const linkedCardClass = `${cardClass} hover:bg-surface-secondary focus-visible:o
       rel="noopener noreferrer"
       class={linkedCardClass}
     >
-      <div
-        class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] text-text-primary"
-        aria-hidden="true"
-      >
-        {certificate.iconLabel}
-      </div>
+      <CertificateCardBadge certificate={certificate} />
 
       <div class="flex min-w-0 flex-col gap-1">
         <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
@@ -37,12 +33,7 @@ const linkedCardClass = `${cardClass} hover:bg-surface-secondary focus-visible:o
     </a>
   ) : (
     <article class={cardClass}>
-      <div
-        class="flex size-11 shrink-0 items-center justify-center rounded-md border border-border bg-surface-secondary font-mono text-[0.6875rem] text-text-primary"
-        aria-hidden="true"
-      >
-        {certificate.iconLabel}
-      </div>
+      <CertificateCardBadge certificate={certificate} />
 
       <div class="flex min-w-0 flex-col gap-1">
         <h2 class="text-base font-semibold tracking-[-0.02em] text-text-primary">
