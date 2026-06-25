@@ -1,3 +1,20 @@
+const PORTABLE_TEXT_PROJECTION = `[]{
+  ...,
+  markDefs[]{
+    ...,
+    _type == "link" => {
+      ...,
+      href
+    }
+  },
+  _type == "image" => {
+    ...,
+    alt,
+    caption,
+    asset->
+  }
+}`;
+
 export const ABOUT_QUERY = `
   *[_id == "about"][0] {
     name,
@@ -73,7 +90,7 @@ export const PROJECT_BY_SLUG_QUERY = `
     title,
     "slug": slug.current,
     description,
-    longDescription,
+    longDescription${PORTABLE_TEXT_PROJECTION},
     techStack,
     coverImage,
     liveUrl,
@@ -112,7 +129,7 @@ export const POST_BY_SLUG_QUERY = `
     excerpt,
     tags,
     coverImage,
-    body
+    body${PORTABLE_TEXT_PROJECTION}
   }
 `;
 
