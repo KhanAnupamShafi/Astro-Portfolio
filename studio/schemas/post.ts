@@ -50,7 +50,8 @@ export const post = defineType({
       title: 'Cover image',
       type: 'image',
       options: {hotspot: true},
-      description: 'Shown at the top of the post and used for social sharing previews',
+      description:
+        'Blog list thumb: ~5:3 crop (200×128). Post hero: full width, natural height. Social OG: 1200×630. Use 16:10 or wider for list thumbs; any ratio works on the post page.',
     }),
     defineField({
       name: 'excerpt',

@@ -4,7 +4,7 @@ import Container from "@/components/layout/Container.astro";
 import AvailabilityBadge from "@/components/ui/AvailabilityBadge.astro";
 import ButtonLink from "@/components/ui/ButtonLink.astro";
 import SocialLinks from "@/components/ui/SocialLinks.astro";
-import type { SocialLink } from "@/types";
+import type { ResumeDownload, SocialLink } from "@/types";
 
 type Props = {
   name: string;
@@ -14,9 +14,11 @@ type Props = {
   initials: string;
   photoUrl?: string;
   socialLinks: SocialLink[];
+  resume?: ResumeDownload;
 };
 
-const { name, title, bio, availability, initials, photoUrl, socialLinks } = Astro.props;
+const { name, title, bio, availability, initials, photoUrl, socialLinks, resume } =
+  Astro.props;
 ---
 
 <section class="py-[clamp(4rem,12vw,8rem)] pb-[clamp(3rem,8vw,5rem)]">
@@ -43,6 +45,19 @@ const { name, title, bio, availability, initials, photoUrl, socialLinks } = Astr
 
         <div class="mt-2 flex flex-wrap items-center gap-3">
           <ButtonLink href="/projects" variant="primary">View Projects</ButtonLink>
+          {
+            resume ? (
+              <ButtonLink
+                href={resume.url}
+                variant="secondary"
+                download={resume.filename}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download Resume
+              </ButtonLink>
+            ) : null
+          }
           <ButtonLink href="/blog" variant="secondary">Read Blog</ButtonLink>
         </div>
 

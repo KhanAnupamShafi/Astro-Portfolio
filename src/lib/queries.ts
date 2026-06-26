@@ -28,6 +28,13 @@ export const ABOUT_QUERY = `
     linkedinUrl,
     twitterUrl,
     availability,
+    resume {
+      asset-> {
+        url,
+        originalFilename,
+        mimeType
+      }
+    },
     skillCategories[] {
       _key,
       title,

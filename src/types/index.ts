@@ -3,6 +3,21 @@ import type { SanityImageSource } from "@sanity/image-url";
 
 export type SanityImage = SanityImageSource;
 
+export type SanityFileAsset = {
+  url: string;
+  originalFilename?: string;
+  mimeType?: string;
+};
+
+export type SanityFile = {
+  asset?: SanityFileAsset;
+};
+
+export type ResumeDownload = {
+  url: string;
+  filename: string;
+};
+
 export type SanityAboutDocument = {
   name: string;
   title: string;
@@ -15,6 +30,7 @@ export type SanityAboutDocument = {
   linkedinUrl?: string;
   twitterUrl?: string;
   availability?: string;
+  resume?: SanityFile;
   skillCategories?: SkillCategory[];
   photo?: SanityImage;
 };

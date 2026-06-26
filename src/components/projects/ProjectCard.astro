@@ -20,10 +20,10 @@ const { project } = Astro.props;
         src={project.coverImageUrl}
         alt=""
         width={800}
-        height={450}
+        height={500}
         loading="lazy"
         decoding="async"
-        class="aspect-[16/10] w-full object-cover"
+        class="aspect-[16/10] w-full object-cover object-top"
       />
     ) : (
       <ProjectWireframeMockup

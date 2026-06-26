@@ -48,6 +48,8 @@ export const project = defineType({
       title: 'Cover image',
       type: 'image',
       options: {hotspot: true},
+      description:
+        '16:10 landscape (e.g. 1600×1000 or 1920×1200). Crop the screenshot before upload — tall full-page captures will lose the bottom. Hotspot anchors the focal point when cropping.',
     }),
     defineField({
       name: 'liveUrl',

@@ -17,6 +17,7 @@ import type {
   SanityPostDocument,
   SanityProjectDocument,
   SanityProjectListItem,
+  ResumeDownload,
   SkillCategory,
   SocialLink,
   WorkExperience,
@@ -105,7 +106,7 @@ export const mapProjectListItem = (
     live: project.liveUrl ?? undefined,
   },
   coverImageUrl: project.coverImage
-    ? urlFor(project.coverImage).width(800).height(450).format("webp").url()
+    ? urlFor(project.coverImage).width(800).height(500).format("webp").url()
     : undefined,
   browserUrl: project.liveUrl ?? project.slug,
   mockupVariant: "grid-short",
@@ -122,7 +123,7 @@ export const mapProjectDetail = (project: SanityProjectDocument): Project => ({
     live: project.liveUrl ?? undefined,
   },
   coverImageUrl: project.coverImage
-    ? urlFor(project.coverImage).width(1200).height(675).format("webp").url()
+    ? urlFor(project.coverImage).width(1200).height(750).format("webp").url()
     : undefined,
   ogImageUrl: buildOgImageUrl(project.coverImage),
   bodyHtml: portableTextToHtml(project.longDescription),
@@ -197,3 +198,18 @@ export const getAboutHeroPhotoUrl = (
 export const getAboutOgImageUrl = (
   about: SanityAboutDocument,
 ): string | undefined => buildOgImageUrl(about.photo);
+
+export const getResumeDownload = (
+  about: SanityAboutDocument,
+): ResumeDownload | undefined => {
+  const asset = about.resume?.asset;
+
+  if (!asset?.url) {
+    return undefined;
+  }
+
+  return {
+    url: asset.url,
+    filename: asset.originalFilename ?? "resume.pdf",
+  };
+};

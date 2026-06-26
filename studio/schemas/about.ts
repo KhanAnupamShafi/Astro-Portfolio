@@ -79,6 +79,15 @@ export const about = defineType({
       description: 'e.g. Open to remote roles',
     }),
     defineField({
+      name: 'resume',
+      title: 'Resume',
+      type: 'file',
+      description: 'PDF resume — shown as a download link in the homepage hero',
+      options: {
+        accept: '.pdf',
+      },
+    }),
+    defineField({
       name: 'skillCategories',
       title: 'Skill categories',
       type: 'array',

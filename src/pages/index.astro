@@ -6,6 +6,7 @@ import {
   buildSocialLinks,
   getAboutHeroPhotoUrl,
   getAboutOgImageUrl,
+  getResumeDownload,
   mapFeaturedProject,
 } from "@/lib/mappers";
 import { ABOUT_QUERY, FEATURED_PROJECTS_QUERY } from "@/lib/queries";
@@ -26,6 +27,7 @@ const socialLinks = buildSocialLinks(about);
 const featuredProjects = featuredProjectDocs.map(mapFeaturedProject);
 const photoUrl = getAboutHeroPhotoUrl(about);
 const ogImageUrl = getAboutOgImageUrl(about);
+const resume = getResumeDownload(about);
 ---
 
 <BaseLayout
@@ -45,6 +47,7 @@ const ogImageUrl = getAboutOgImageUrl(about);
     initials={initials}
     photoUrl={photoUrl}
     socialLinks={socialLinks}
+    resume={resume}
   />
   <FeaturedProjects projects={featuredProjects} />
 </BaseLayout>
